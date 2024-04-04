@@ -1,0 +1,22 @@
+.sidebar {
+  padding: 2rem;
+  height: 100vh;
+  width: 30rem;
+  background: #fff;
+}
+
+.logo {
+  font-size: 2.4rem;
+  font-weight: 600;
+}
+
+.navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.page-link {
+  font-size: 1.4rem;
+}

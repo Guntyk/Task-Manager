@@ -1,0 +1,15 @@
+.tasks-page {
+  height: 200vh;
+}
+
+.tasks-page .title {
+  margin-bottom: 3rem;
+}
+
+.tasks-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: 2rem;
+  /* outline: 2px solid lime; */
+}
