@@ -1,0 +1,14 @@
+.tasksPage {
+  height: 200vh;
+
+  .title {
+    margin-bottom: 3rem;
+  }
+}
+
+.tasksList {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: 2rem;
+}

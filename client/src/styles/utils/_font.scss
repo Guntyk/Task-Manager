@@ -1,0 +1,25 @@
+@font-face {
+  font-family: $mainFontFamily;
+  src: url('font/Inter-Light.ttf');
+  font-weight: $fontWeightLight;
+}
+@font-face {
+  font-family: $mainFontFamily;
+  src: url('font/Inter-Regular.ttf');
+  font-weight: $fontWeightRegular;
+}
+@font-face {
+  font-family: $mainFontFamily;
+  src: url('font/Inter-Medium.ttf');
+  font-weight: $fontWeightMedium;
+}
+@font-face {
+  font-family: $mainFontFamily;
+  src: url('font/Inter-SemiBold.ttf');
+  font-weight: $fontWeightSemiBold;
+}
+@font-face {
+  font-family: $mainFontFamily;
+  src: url('font/Inter-Bold.ttf');
+  font-weight: $fontWeightBold;
+}

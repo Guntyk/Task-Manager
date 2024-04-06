@@ -1,7 +1,7 @@
 import { Priority } from 'components/Priority';
 import { users } from 'constants/users';
 import { getUserInitials } from 'helpers/getUserInitials';
-import 'pages/Tasks/TaskCard/TaskCard.css';
+import styles from 'pages/Tasks/TaskCard/TaskCard.scss';
 
 export const TaskCard = ({ task: { title, date, deadline, executorsIds, stage, subtasks, priority, tag } }) => {
   const executors = [...new Set(executorsIds)].map((executorId) => users.find((user) => user.id === executorId));
@@ -19,34 +19,34 @@ export const TaskCard = ({ task: { title, date, deadline, executorsIds, stage, s
   };
 
   return (
-    <div className='task-card'>
-      <div className='header'>
+    <div className={styles.taskCard}>
+      <div className={styles.header}>
         <div>
-          <span className='name text-l'>
-            <div className='status' style={{ background: status(stage) }} />
+          <span className={styles.name}>
+            <div className={styles.status} style={{ background: status(stage) }} />
             {title}
           </span>
-          <span className='date'>{date}</span>
+          <span className={styles.date}>{date}</span>
         </div>
         <div>
           <Priority number={priority} />
-          <span className='date'>{deadline}</span>
+          <span className={styles.date}>{deadline}</span>
         </div>
       </div>
-      <hr />
-      <div className='addition-info'>
-        <div className='executors text'>
+      <hr className={styles.line} />
+      <div className={styles.additionInfo}>
+        <div className={styles.executors}>
           {executors.length <= 5 ? (
             executors.map(({ id, name, color }) => (
-              <span key={id} className='avatar text-s' style={{ background: color }}>
+              <span key={id} className={styles.avatar} style={{ background: color }}>
                 {getUserInitials(name)}
               </span>
             ))
           ) : (
             <>
-              <span className='executors-overflow'>+{executors.length - 5}</span>
+              <span className={styles.executorsOverflow}>+{executors.length - 5}</span>
               {executors.slice(0, 5).map(({ id, name, color }) => (
-                <span key={id} className='avatar text-s' style={{ background: color }}>
+                <span key={id} className={styles.avatar} style={{ background: color }}>
                   {getUserInitials(name)}
                 </span>
               ))}
@@ -54,19 +54,19 @@ export const TaskCard = ({ task: { title, date, deadline, executorsIds, stage, s
           )}
         </div>
       </div>
-      <hr />
-      <div className='subtasks text-l'>
+      <hr className={styles.line} />
+      <div className={styles.subtasks}>
         {subtasks?.length > 0 ? (
-          subtasks.map(({ title, executorsIds, deadline }) => (
-            <div className='subtask'>
-              <span className='text'>{title}</span>
-              <span className='date'>{deadline}</span>
+          subtasks.map(({ title, deadline }) => (
+            <div className={styles.subtask}>
+              <span>{title}</span>
+              <span className={styles.date}>{deadline}</span>
             </div>
           ))
         ) : (
-          <span className='no-subtasks'>No subtasks</span>
+          <span className={styles.noSubtasks}>No subtasks</span>
         )}
-        <button className='add-subtask text-s'>Add subtask</button>
+        <button className={styles.addSubtask}>Add subtask</button>
       </div>
     </div>
   );
