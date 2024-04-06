@@ -1,18 +1,19 @@
+import { NavLink } from 'react-router-dom';
 import { pages } from 'constants/pages';
 import styles from 'components/Sidebar/Sidebar.scss';
 
 export const Sidebar = () => (
   <section className={styles.sidebar}>
-    <a className={styles.logo} href='/'>
+    <NavLink className={styles.logo} to='/'>
       Task Manager
-    </a>
+    </NavLink>
     <nav>
       <ul className={styles.navigation}>
-        {pages.map(({ title, link }) => (
-          <li>
-            <a className={styles.pageLink} href={link}>
+        {pages.map(({ id, title, link }) => (
+          <li key={id}>
+            <NavLink className={styles.pageLink} to={link}>
               {title}
-            </a>
+            </NavLink>
           </li>
         ))}
       </ul>
