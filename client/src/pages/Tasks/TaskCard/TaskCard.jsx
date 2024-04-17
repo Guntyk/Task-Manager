@@ -57,12 +57,12 @@ export const TaskCard = ({
         <div className={styles.additionData}>
           {comments && comments.length > 0 && (
             <div className={styles.additionDataElement}>
-              <img src={message} alt='comment' />
+              <img width={15} height={15} src={message} alt='comment' />
               <span>{comments.length}</span>
             </div>
           )}
           <div className={styles.additionDataElement}>
-            <img src={clock} alt='clock' />
+            <img width={15} height={15} src={clock} alt='clock' />
             <span>{timeSpent ? convertSeconds(timeSpent) : '00:00'}</span>
           </div>
         </div>
