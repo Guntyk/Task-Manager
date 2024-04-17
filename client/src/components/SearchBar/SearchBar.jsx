@@ -4,7 +4,7 @@ import styles from 'components/SearchBar/SearchBar.scss';
 
 const animatedComponents = makeAnimated();
 
-export const SearchBar = ({ setSearchValue, tagsOptions, setTagsList, statusesOptions, setStatusesList }) => {
+export const SearchBar = ({ setSearchValue, tagsOptions, tagsList, setTagsList, statusesOptions, setStatusesList }) => {
   const handleChange = ({ target: { value } }) => {
     setSearchValue(value);
   };
@@ -22,26 +22,73 @@ export const SearchBar = ({ setSearchValue, tagsOptions, setTagsList, statusesOp
       <label className={styles.inputWrapper}>
         <input className={styles.search} placeholder='Search' onChange={handleChange} />
       </label>
-
-      <div className={styles.filters}>
-        <Select
-          isSearchable
-          isMulti
-          components={animatedComponents}
-          name='tags'
-          placeholder='Tags'
-          options={tagsOptions}
-          onChange={handleTagsChange}
-        />
-        <Select
-          isClearable
-          components={animatedComponents}
-          name='statuses'
-          placeholder='Statuses'
-          options={statusesOptions}
-          onChange={handleStatusesChange}
-        />
-      </div>
+      <Select
+        value={tagsList}
+        isSearchable
+        isMulti
+        components={animatedComponents}
+        name='tags'
+        placeholder='Tags'
+        options={tagsOptions}
+        onChange={handleTagsChange}
+        className={styles.dropdown}
+        classNames={{
+          multiValue: () => styles.multiValue,
+          multiValueLabel: () => styles.multiValueLabel,
+          multiValueRemove: () => styles.removeBtn,
+        }}
+        styles={{
+          control: (baseStyles) => ({
+            ...baseStyles,
+            border: 0,
+          }),
+          input: (baseStyles) => ({
+            ...baseStyles,
+            margin: 0,
+            padding: 0,
+          }),
+          valueContainer: (baseStyles) => ({
+            ...baseStyles,
+            padding: '0 1rem',
+          }),
+          placeholder: (baseStyles) => ({
+            ...baseStyles,
+            padding: '1rem 0',
+          }),
+        }}
+      />
+      <Select
+        isClearable
+        components={animatedComponents}
+        name='statuses'
+        placeholder='Statuses'
+        options={statusesOptions}
+        onChange={handleStatusesChange}
+        className={styles.dropdown}
+        styles={{
+          control: (baseStyles) => ({
+            ...baseStyles,
+            border: 0,
+          }),
+          input: (baseStyles) => ({
+            ...baseStyles,
+            margin: 0,
+            padding: 0,
+          }),
+          valueContainer: (baseStyles) => ({
+            ...baseStyles,
+            padding: '0 1rem',
+          }),
+          singleValue: (baseStyles) => ({
+            ...baseStyles,
+            padding: '1rem 0',
+          }),
+          placeholder: (baseStyles) => ({
+            ...baseStyles,
+            padding: '1rem 0',
+          }),
+        }}
+      />
     </div>
   );
 };

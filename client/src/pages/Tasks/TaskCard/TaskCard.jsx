@@ -11,9 +11,20 @@ import styles from 'pages/Tasks/TaskCard/TaskCard.scss';
 
 export const TaskCard = ({
   task: { title, creationDate, deadline, comments, executorsIds, status, subtasks, priority, tags, timeSpent },
+  setTagsList,
 }) => {
   const executors = [...new Set(executorsIds)].map((executorId) => users.find((user) => user.id === executorId));
   const id = useId();
+
+  const handleTagClick = ({ target: { innerText } }) => {
+    console.log(innerText);
+    const tag = {
+      value: innerText.toLowerCase(),
+      label: innerText,
+    };
+
+    setTagsList((previousTags) => [...previousTags, tag]);
+  };
 
   return (
     <div className={styles.taskCard}>
@@ -21,8 +32,8 @@ export const TaskCard = ({
         {tags && tags.length > 0 && (
           <div className={styles.tags}>
             {tags.map((tag, i) => (
-              <span className={styles.tag} key={`${id}-${i}`}>
-                #{tag}
+              <span className={styles.tag} key={`${id}-${i}`} onClick={handleTagClick}>
+                {tag}
               </span>
             ))}
           </div>

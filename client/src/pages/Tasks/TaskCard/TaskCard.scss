@@ -40,7 +40,21 @@
   padding: 0.5rem 0.75rem;
   color: #fff;
   border-radius: 5rem;
-  background: $pastelBlue;
+  background: $blue;
+  filter: grayscale(0.9);
+  opacity: 0.25;
+  transition: 0.2s;
+  cursor: pointer;
+
+  &::before {
+    content: '#';
+    margin-right: 0.25rem;
+  }
+
+  &:hover {
+    filter: grayscale(0);
+    opacity: 1;
+  }
 }
 
 .name {

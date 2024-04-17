@@ -26,7 +26,7 @@ export default function Tasks() {
   const uniqueStatuses = [...new Set(tasks.map(({ status }) => status))].map((status) => ({
     value: status.toLowerCase(),
     label: status.charAt(0).toUpperCase() + status.slice(1),
-    color: '#FF0000'
+    color: '#FF0000',
   }));
 
   return (
@@ -36,20 +36,20 @@ export default function Tasks() {
         setSearchValue={setSearchValue}
         tagsOptions={uniqueTags}
         statusesOptions={uniqueStatuses}
+        tagsList={tagsList}
         setTagsList={setTagsList}
         setStatusesList={setStatusesList}
       />
       <div className={styles.tasksList}>
-        {tagsList?.length === 0 && searchedStatus.length === 0
-          ? tasksList.map((task) => <TaskCard task={task} key={task.id} />)
-          : tagsList.length > 0
-          ? tasksList
-              .filter((task) => task?.tags && tagsList.every(({ label }) => task.tags.includes(label)))
-              .map((task) => <TaskCard task={task} key={task.id} />)
-          : searchedStatus.length > 0 &&
-            tasksList
-              .filter(({ status }) => searchedStatus === status)
-              .map((task) => <TaskCard task={task} key={task.id} />)}
+        {tasksList
+          .filter(
+            ({ tags, status }) =>
+              (!tagsList.length || (tags && tagsList.every(({ label }) => tags.includes(label)))) &&
+              (!searchedStatus.length || status === searchedStatus)
+          )
+          .map((task) => (
+            <TaskCard task={task} setTagsList={setTagsList} key={task.id} />
+          ))}
       </div>
     </section>
   );
