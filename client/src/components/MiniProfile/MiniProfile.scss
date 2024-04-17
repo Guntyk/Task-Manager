@@ -1,0 +1,20 @@
+.userCard {
+  position: relative;
+  transition: 0.2s;
+
+  &:not(:first-child) {
+    margin: 0 -1rem;
+  }
+  &:first-child {
+    margin-left: -1rem;
+  }
+
+  &:hover > div {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
+.avatar {
+  @extend %avatar;
+}

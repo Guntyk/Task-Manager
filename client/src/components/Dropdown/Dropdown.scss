@@ -1,0 +1,124 @@
+.dropdownBtn {
+  @extend %border;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.6rem 1.2rem;
+  cursor: pointer;
+  transition: 0.2s;
+  -webkit-tap-highlight-color: transparent;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 52%;
+    right: 1.2rem;
+    transform: translateY(-50%);
+  }
+
+  &Active {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    &::before {
+      top: 45%;
+      transform: translateY(-50%) rotate(180deg);
+    }
+  }
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.dropdownLabel {
+  position: absolute;
+  top: -2.5rem;
+  left: 1.2rem;
+  padding: 0.2rem 0.8rem;
+  font-size: 2rem;
+  font-weight: $fontWeightRegular;
+  line-height: 1.53;
+  letter-spacing: 0.065rem;
+  background: #fff;
+  transform: translateY(50%);
+}
+
+.option,
+.selectedOption {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.placeholder {
+  font-size: $regularFontSize;
+  font-weight: $fontWeightRegular;
+  line-height: 1.33;
+  letter-spacing: 0.075rem;
+}
+
+.dropdownContent {
+  position: absolute;
+  padding: 0.8rem 0;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  border-radius: 0.5rem;
+  background: #fff !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: 200ms;
+  z-index: -5;
+
+  &Active {
+    transform: scaleY(1);
+    z-index: 5;
+  }
+
+  &Small {
+    padding: 0;
+  }
+}
+
+.dropdownItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.8rem 1.2rem;
+  cursor: pointer;
+  transition: 200ms;
+
+  &:last-child {
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+  }
+
+  &:hover {
+    background: $lightGray;
+  }
+
+  &Selected {
+    pointer-events: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      right: 1.2rem;
+    }
+  }
+}
+
+.description {
+  font-size: 2rem;
+  font-weight: $fontWeightRegular;
+  line-height: 1.15;
+  letter-spacing: 0.065rem;
+}

@@ -1,0 +1,27 @@
+.wrapper {
+  display: flex;
+//   justify-content: space-between;
+  align-items: center;
+}
+
+.inputWrapper {
+  position: relative;
+  margin: 3rem 0;
+  width: calc(100% / 3 - 1.34rem);
+  min-width: 35rem;
+}
+
+.search {
+  @extend %border;
+  @extend %text;
+
+  width: 100%;
+  padding: 1rem;
+  background: #fff;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

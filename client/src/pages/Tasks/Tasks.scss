@@ -1,9 +1,5 @@
 .tasksPage {
-  height: 200vh;
-
-  .title {
-    margin-bottom: 3rem;
-  }
+  height: 100vh;
 }
 
 .tasksList {
@@ -11,4 +7,6 @@
   flex-wrap: wrap;
   align-items: start;
   gap: 2rem;
+  padding-bottom: 2rem;
+  transition: 0.7s;
 }

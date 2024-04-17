@@ -1,12 +1,41 @@
 %text {
-    font-size: $regularFontSize;
-    white-space: pre-line;
+  font-size: $regularFontSize;
+  white-space: pre-line;
+}
+
+%text-xl {
+  font-size: $extraLargeFontSize;
+  font-weight: $fontWeightSemiBold;
 }
 
 %text-l {
-    font-size: $largeFontSize;
+  font-size: $largeFontSize;
+  line-height: 1.2;
 }
 
 %text-s {
-    font-size: $smallFontSize;
+  font-size: $smallFontSize;
+}
+
+%addition {
+  color: $gray;
+  font-size: $smallFontSize;
+}
+
+%avatar {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+  color: #fff;
+  font-weight: 600;
+  aspect-ratio: 1/1;
+  user-select: none;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+%border {
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  border-radius: 0.5rem;
 }
