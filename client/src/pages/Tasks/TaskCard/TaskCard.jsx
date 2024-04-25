@@ -1,20 +1,28 @@
-import { useId } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { convertSeconds } from 'helpers/convertSeconds';
 import { statusColors } from 'constants/statusColors';
-import { users } from 'constants/users';
 import { MiniProfile } from 'components/MiniProfile';
 import { Priority } from 'components/Priority';
 import user from 'media/user-circle.svg';
 import message from 'media/message.svg';
 import clock from 'media/clock.svg';
 import styles from 'pages/Tasks/TaskCard/TaskCard.scss';
+import { Loader } from 'components/MiniProfile/Loader/Loader';
 
 export const TaskCard = ({
   task: { title, creationDate, deadline, comments, executorsIds, status, subtasks, priority, tags, timeSpent },
   setTagsList,
+  usersList,
+  isUsersRequestLoading,
 }) => {
-  const executors = [...new Set(executorsIds)].map((executorId) => users.find((user) => user.id === executorId));
+  const [executors, setExecutors] = useState([]);
   const id = useId();
+
+  useEffect(() => {
+    if (usersList.length > 0) {
+      setExecutors([...new Set(executorsIds)].map((executorId) => usersList.find((user) => user.id === executorId)));
+    }
+  }, [usersList]);
 
   const handleTagClick = ({ target: { innerText } }) => {
     console.log(innerText);
@@ -67,15 +75,19 @@ export const TaskCard = ({
           </div>
         </div>
         <div className={styles.executors}>
-          {executors && executors.length > 0 ? (
-            <>
-              {executors.length > 5 && <span className={styles.executorsOverflow}>+{executors.length - 5}</span>}
-              {executors.slice(0, 5).map((executor) => (
-                <MiniProfile user={executor} key={executor.id} />
-              ))}
-            </>
+          {!isUsersRequestLoading ? (
+            executors && executors.length > 0 ? (
+              <>
+                {executors.length > 5 && <span className={styles.executorsOverflow}>+{executors.length - 5}</span>}
+                {executors.slice(0, 5).map((executor) => (
+                  <MiniProfile user={executor} key={executor.id} />
+                ))}
+              </>
+            ) : (
+              <img className={styles.avatar} src={user} alt='anybody' />
+            )
           ) : (
-            <img className={styles.avatar} src={user} alt='anybody' />
+            <Loader />
           )}
         </div>
       </div>

@@ -1,0 +1,35 @@
+.wrapper {
+  display: grid;
+  place-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(1rem);
+  pointer-events: none;
+  opacity: 0;
+  transition: 0.4s;
+  z-index: 10;
+
+  &.active {
+    opacity: 1;
+    pointer-events: all;
+
+    .modal {
+      transform: translateY(0);
+    }
+  }
+}
+
+.modal {
+  @extend %border;
+  @extend %text;
+
+  width: 60rem;
+  height: 30rem;
+  background: #fff;
+  transform: translateY(-50vh);
+  transition: 0.7s;
+}

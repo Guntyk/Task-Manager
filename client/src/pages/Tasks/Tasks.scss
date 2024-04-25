@@ -2,6 +2,26 @@
   height: 100vh;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.createTaskBtn {
+  @extend %border;
+  @extend %text;
+
+  background: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 5rem;
+
+  &:hover {
+    color: #fff;
+    background: $blue;
+  }
+}
+
 .tasksList {
   display: flex;
   flex-wrap: wrap;
@@ -9,4 +29,11 @@
   gap: 2rem;
   padding-bottom: 2rem;
   transition: 0.7s;
+}
+
+.mainLoaderWrapper {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 70vh;
 }

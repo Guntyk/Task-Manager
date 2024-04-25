@@ -113,7 +113,7 @@
   transition: 0.2s;
   gap: 0rem;
   &:hover {
-    > article {
+    > span {
       margin: 0 0.15rem;
       &:first-child {
         margin-right: 0;
