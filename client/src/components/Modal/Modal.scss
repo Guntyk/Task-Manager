@@ -29,13 +29,46 @@
   height: 100%;
 }
 
+.title {
+  @extend %text-xl;
+
+  margin-bottom: 2.4rem;
+}
+
 .modal {
   @extend %border;
   @extend %text;
 
+  padding: 3rem;
   width: 70%;
   height: 70%;
   background: #fff;
   transform: translateY(-50vh);
   transition: 0.7s;
+
+  .inputsWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+}
+
+.input {
+  @extend %border;
+  @extend %text;
+
+  padding: 1rem;
+}
+
+.sendBtn {
+  @extend %border;
+
+  padding: 1rem 8rem;
+  border-radius: 5rem;
+
+  &:hover {
+    color: #fff;
+    background-color: $blue;
+  }
 }

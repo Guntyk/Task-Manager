@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import UsersService from 'services/UsersService';
+import useUsers from 'hooks/useUsers';
 import * as tasksSlice from '../../redux/features/tasksSlice';
 import { ErrorMessage } from 'components/ErrorMessage/ErrorMessage';
 import { SearchBar } from 'components/SearchBar';
@@ -10,23 +10,19 @@ import { TaskCard } from 'pages/Tasks/TaskCard';
 import styles from 'pages/Tasks/Tasks.scss';
 
 export default function Tasks() {
+  const { getUsers, users, isRequestLoading: isUsersRequestLoading, requestError: usersRequestError } = useUsers();
   const [searchedStatus, setStatusesList] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [tagsList, setTagsList] = useState([]);
   const dispatch = useDispatch();
 
-  const [isUsersRequestLoading, setIsUsersRequestLoading] = useState(false);
-  const [usersRequestError, setUsersRequestError] = useState(false);
-
   const isTasksRequestLoading = useSelector((state) => state.tasks.isLoading);
   const tasksRequestError = useSelector((state) => state.tasks.error);
   const tasks = useSelector((state) => state.tasks.tasks);
 
-  const [usersList, setUsersList] = useState([]);
-
   useEffect(() => {
-    if (usersList.length === 0) {
+    if (users.length === 0) {
       getUsers();
     }
     if (tasks.length === 0) {
@@ -34,19 +30,9 @@ export default function Tasks() {
     }
   }, []);
 
-  const getUsers = async () => {
-    setIsUsersRequestLoading(true);
-    setUsersRequestError(null);
-
-    const { result, error } = await UsersService.getUsers();
-
-    setUsersRequestError(error);
-    setIsUsersRequestLoading(false);
-
-    if (result) {
-      setUsersList(result);
-    }
-  };
+  useEffect(() => {
+    console.log(tasks);
+  }, [tasks]);
 
   const uniqueTags = [...new Set(tasks.flatMap((task) => task.tags || []))].map((tag) => ({
     value: tag.toLowerCase(),
@@ -71,7 +57,7 @@ export default function Tasks() {
         >
           Create task
         </button>
-        <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} createTask />
+        <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} users={users} />
       </header>
       <SearchBar
         setSearchValue={setSearchValue}
@@ -95,7 +81,7 @@ export default function Tasks() {
                 <TaskCard
                   task={task}
                   setTagsList={setTagsList}
-                  usersList={usersList}
+                  usersList={users}
                   isUsersRequestLoading={isUsersRequestLoading}
                   key={task.id}
                 />

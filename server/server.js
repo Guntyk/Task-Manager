@@ -12,8 +12,6 @@ app.use(
 app.use(bodyParser.json());
 app.use(cors());
 
-const users = require('./constants/users.json');
-
 const db = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
@@ -112,7 +110,9 @@ app.delete('/tasks/delete/:id', (req, res) => {
       if (error) {
         throw error;
       }
-      res.send(results);
+      setTimeout(() => {
+        res.send(results);
+      }, 500);
     });
   });
 });

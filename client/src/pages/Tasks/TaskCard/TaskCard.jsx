@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import * as tasksSlice from '../../../redux/features/tasksSlice';
 import { formatTimestamp } from 'helpers/formatTimestamp';
 import { convertSeconds } from 'helpers/convertSeconds';
-import { statusColors } from 'constants/statusColors';
+import { statuses } from 'constants/statuses';
 import { Loader } from 'components/MiniProfile/Loader/Loader';
 import { MiniProfile } from 'components/MiniProfile';
 import { Priority } from 'components/Priority';
@@ -53,7 +53,10 @@ export const TaskCard = ({
         <div className={styles.headerWrapper}>
           <div>
             <span className={styles.name}>
-              <div className={styles.status} style={{ background: statusColors[status] }} />
+              <div
+                className={styles.status}
+                style={{ background: statuses.find(({ name }) => name === status).color }}
+              />
               {title}
             </span>
             <span className={styles.date}>{formatTimestamp(creationDate)}</span>

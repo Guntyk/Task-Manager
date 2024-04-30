@@ -7,10 +7,6 @@ const initialState = {
   isLoading: false,
 };
 
-const generateTaskObject = (data) => ({
-  title: data,
-});
-
 export const getTasks = createAsyncThunk('tasks', async (_, { rejectWithValue }) => {
   const { result, error } = await TasksService.getTasks();
 
@@ -21,10 +17,9 @@ export const getTasks = createAsyncThunk('tasks', async (_, { rejectWithValue })
   return rejectWithValue(error || 'An error occurred while getting tasks data. Please try again later');
 });
 
-export const createTask = createAsyncThunk('tasks/new', async ({ title }, { rejectWithValue }) => {
-  const { result, error } = await TasksService.createTask(generateTaskObject(title));
+export const createTask = createAsyncThunk('tasks/new', async (task, { rejectWithValue }) => {
+  const { result, error } = await TasksService.createTask(task);
 
-  console.log(result);
   if (result) {
     return result;
   }
