@@ -23,13 +23,20 @@
   }
 }
 
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
 .modal {
   @extend %border;
   @extend %text;
 
-  width: 60rem;
-  height: 30rem;
+  width: 70%;
+  height: 70%;
   background: #fff;
   transform: translateY(-50vh);
+  pointer-events: all;
   transition: 0.7s;
 }

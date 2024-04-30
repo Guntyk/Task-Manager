@@ -1,12 +1,12 @@
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useState } from 'react';
 import UsersService from 'services/UsersService';
 import TasksService from 'services/TasksService';
+import { ErrorMessage } from 'components/ErrorMessage/ErrorMessage';
 import { SearchBar } from 'components/SearchBar';
 import { Loader } from 'components/Loader';
 import { Modal } from 'components/Modal';
 import { TaskCard } from 'pages/Tasks/TaskCard';
 import styles from 'pages/Tasks/Tasks.scss';
-import { ErrorMessage } from 'components/ErrorMessage/ErrorMessage';
 
 export default function Tasks() {
   const [searchedStatus, setStatusesList] = useState('');
@@ -86,7 +86,7 @@ export default function Tasks() {
         >
           Create task
         </button>
-        <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+        <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} createTask />
       </header>
       <SearchBar
         setSearchValue={setSearchValue}
@@ -97,23 +97,27 @@ export default function Tasks() {
         setStatusesList={setStatusesList}
       />
       <div className={styles.tasksList}>
-        {tasks.length > 0 &&
-          tasks
-            .filter(({ title }) => title.includes(searchValue))
-            .filter(
-              ({ tags, status }) =>
-                (!tagsList.length || (tags && tagsList.every(({ label }) => tags.includes(label)))) &&
-                (!searchedStatus.length || status === searchedStatus)
-            )
-            .map((task) => (
-              <TaskCard
-                task={task}
-                setTagsList={setTagsList}
-                usersList={usersList}
-                isUsersRequestLoading={isUsersRequestLoading}
-                key={task.id}
-              />
-            ))}
+        {!isTasksRequestLoading &&
+          (tasks.length > 0 ? (
+            tasks
+              .filter(({ title }) => title.includes(searchValue))
+              .filter(
+                ({ tags, status }) =>
+                  (!tagsList.length || (tags && tagsList.every(({ label }) => tags.includes(label)))) &&
+                  (!searchedStatus.length || status === searchedStatus)
+              )
+              .map((task) => (
+                <TaskCard
+                  task={task}
+                  setTagsList={setTagsList}
+                  usersList={usersList}
+                  isUsersRequestLoading={isUsersRequestLoading}
+                  key={task.id}
+                />
+              ))
+          ) : (
+            <span className={styles.noTasks}>There are no tasks yet</span>
+          ))}
       </div>
       {(isTasksRequestLoading || isUsersRequestLoading) && (
         <div className={styles.mainLoaderWrapper}>
@@ -121,6 +125,7 @@ export default function Tasks() {
         </div>
       )}
       {tasksRequestError && <ErrorMessage errorText={tasksRequestError.message} />}
+      {usersRequestError && <ErrorMessage errorText={usersRequestError.message} />}
     </section>
   );
 }

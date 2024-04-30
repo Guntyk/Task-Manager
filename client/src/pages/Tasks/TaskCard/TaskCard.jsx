@@ -1,13 +1,14 @@
 import { useEffect, useId, useState } from 'react';
+import { formatTimestamp } from 'helpers/formatTimestamp';
 import { convertSeconds } from 'helpers/convertSeconds';
 import { statusColors } from 'constants/statusColors';
+import { Loader } from 'components/MiniProfile/Loader/Loader';
 import { MiniProfile } from 'components/MiniProfile';
 import { Priority } from 'components/Priority';
 import user from 'media/user-circle.svg';
 import message from 'media/message.svg';
 import clock from 'media/clock.svg';
 import styles from 'pages/Tasks/TaskCard/TaskCard.scss';
-import { Loader } from 'components/MiniProfile/Loader/Loader';
 
 export const TaskCard = ({
   task: { title, creationDate, deadline, comments, executorsIds, status, subtasks, priority, tags, timeSpent },
@@ -52,11 +53,11 @@ export const TaskCard = ({
               <div className={styles.status} style={{ background: statusColors[status] }} />
               {title}
             </span>
-            <span className={styles.date}>{creationDate}</span>
+            <span className={styles.date}>{formatTimestamp(creationDate)}</span>
           </div>
           <div>
-            <Priority number={priority} />
-            <span className={styles.date}>{deadline}</span>
+            <Priority number={priority || 1} />
+            <span className={styles.date}>{deadline && formatTimestamp(deadline)}</span>
           </div>
         </div>
       </div>

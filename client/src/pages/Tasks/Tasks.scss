@@ -37,3 +37,7 @@
   width: 100%;
   height: 70vh;
 }
+
+.noTasks {
+  @extend %text-l;
+}
