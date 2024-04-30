@@ -1,6 +1,7 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import UsersService from 'services/UsersService';
-import TasksService from 'services/TasksService';
+import * as tasksSlice from '../../redux/features/tasksSlice';
 import { ErrorMessage } from 'components/ErrorMessage/ErrorMessage';
 import { SearchBar } from 'components/SearchBar';
 import { Loader } from 'components/Loader';
@@ -13,27 +14,25 @@ export default function Tasks() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [tagsList, setTagsList] = useState([]);
+  const dispatch = useDispatch();
 
   const [isUsersRequestLoading, setIsUsersRequestLoading] = useState(false);
   const [usersRequestError, setUsersRequestError] = useState(false);
-  const [isTasksRequestLoading, setIsTasksRequestLoading] = useState(false);
-  const [tasksRequestError, setTasksRequestError] = useState(false);
+
+  const isTasksRequestLoading = useSelector((state) => state.tasks.isLoading);
+  const tasksRequestError = useSelector((state) => state.tasks.error);
+  const tasks = useSelector((state) => state.tasks.tasks);
 
   const [usersList, setUsersList] = useState([]);
-  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     if (usersList.length === 0) {
       getUsers();
     }
     if (tasks.length === 0) {
-      getTasks();
+      dispatch(tasksSlice.getTasks());
     }
   }, []);
-
-  useEffect(() => {
-    console.log(tasks);
-  }, [tasks]);
 
   const getUsers = async () => {
     setIsUsersRequestLoading(true);
@@ -46,20 +45,6 @@ export default function Tasks() {
 
     if (result) {
       setUsersList(result);
-    }
-  };
-
-  const getTasks = async () => {
-    setIsTasksRequestLoading(true);
-    setTasksRequestError(null);
-
-    const { result, error } = await TasksService.getTasks();
-
-    setTasksRequestError(error);
-    setIsTasksRequestLoading(false);
-
-    if (result) {
-      setTasks(result);
     }
   };
 

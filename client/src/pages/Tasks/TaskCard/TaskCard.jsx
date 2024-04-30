@@ -1,4 +1,6 @@
 import { useEffect, useId, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import * as tasksSlice from '../../../redux/features/tasksSlice';
 import { formatTimestamp } from 'helpers/formatTimestamp';
 import { convertSeconds } from 'helpers/convertSeconds';
 import { statusColors } from 'constants/statusColors';
@@ -11,13 +13,14 @@ import clock from 'media/clock.svg';
 import styles from 'pages/Tasks/TaskCard/TaskCard.scss';
 
 export const TaskCard = ({
-  task: { title, creationDate, deadline, comments, executorsIds, status, subtasks, priority, tags, timeSpent },
+  task: { id, title, creationDate, deadline, comments, executorsIds, status, subtasks, priority, tags, timeSpent },
   setTagsList,
   usersList,
   isUsersRequestLoading,
 }) => {
   const [executors, setExecutors] = useState([]);
-  const id = useId();
+  const dispatch = useDispatch();
+  const tagId = useId();
 
   useEffect(() => {
     if (usersList.length > 0) {
@@ -41,7 +44,7 @@ export const TaskCard = ({
         {tags && tags.length > 0 && (
           <div className={styles.tags}>
             {tags.map((tag, i) => (
-              <span className={styles.tag} key={`${id}-${i}`} onClick={handleTagClick}>
+              <span className={styles.tag} key={`${tagId}-${i}`} onClick={handleTagClick}>
                 {tag}
               </span>
             ))}
@@ -56,6 +59,13 @@ export const TaskCard = ({
             <span className={styles.date}>{formatTimestamp(creationDate)}</span>
           </div>
           <div>
+            <button
+              onClick={() => {
+                dispatch(tasksSlice.deleteTask(id));
+              }}
+            >
+              Delete
+            </button>
             <Priority number={priority || 1} />
             <span className={styles.date}>{deadline && formatTimestamp(deadline)}</span>
           </div>

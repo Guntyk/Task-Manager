@@ -12,8 +12,17 @@ export default class TasksService {
   }
 
   static async createTask(taskObject) {
-    console.log(taskObject);
     const [error, result] = await backendApi.post('/tasks/new', taskObject);
+
+    if (error) {
+      return { result: null, error };
+    }
+
+    return { result, error: null };
+  }
+
+  static async deleteTask(id) {
+    const [error, result] = await backendApi.delete(`/tasks/delete/${id}`);
 
     if (error) {
       return { result: null, error };

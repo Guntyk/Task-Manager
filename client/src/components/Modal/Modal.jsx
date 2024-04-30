@@ -1,22 +1,21 @@
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import cn from 'classnames';
+import * as tasksSlice from '../../redux/features/tasksSlice';
 import { ErrorMessage } from 'components/ErrorMessage/ErrorMessage';
 import styles from 'components/Modal/Modal.scss';
-import { useState } from 'react';
-import TasksService from 'services/TasksService';
 
-export const Modal = ({ isOpen, setIsOpen, createTask }) => {
+export const Modal = ({ isOpen, setIsOpen }) => {
   const [error, setError] = useState(false);
-
-  const generateTaskObject = (data) => ({
-    title: data,
-  });
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(false);
 
     if (e.target.title.value.length) {
-      const { result, error } = await TasksService.createTask(generateTaskObject(e.target.title.value));
+      const title = e.target.title.value;
+      dispatch(tasksSlice.createTask({ title }));
       e.target.title.value = '';
     } else {
       setError(true);

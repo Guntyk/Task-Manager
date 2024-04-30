@@ -62,12 +62,16 @@ app.get('/tasks', (req, res) => {
 // Create task
 app.post('/tasks/new', (req, res) => {
   let sql = 'INSERT INTO tasks SET ?';
-  let query = db.query(sql, req.body, (error, result) => {
+  db.query(sql, req.body, (error, result) => {
     if (error) {
       throw error;
     }
-    console.log(result);
-    res.send('Task successfully created');
+    db.query('SELECT * FROM tasks', (error, results) => {
+      if (error) {
+        throw error;
+      }
+      res.send(results);
+    });
   });
 });
 
@@ -98,14 +102,18 @@ app.get('/tasks/update/:id', (req, res) => {
 });
 
 // Delete task
-app.get('/tasks/delete/:id', (req, res) => {
+app.delete('/tasks/delete/:id', (req, res) => {
   let sql = `DELETE FROM tasks WHERE id = ${req.params.id}`;
-  let query = db.query(sql, (error, result) => {
+  db.query(sql, (error, result) => {
     if (error) {
       throw error;
     }
-    console.log(result);
-    res.send('Task deleted...');
+    db.query('SELECT * FROM tasks', (error, results) => {
+      if (error) {
+        throw error;
+      }
+      res.send(results);
+    });
   });
 });
 
