@@ -19,7 +19,7 @@
 
   width: 100%;
   padding: 1rem;
-  background: #fff;
+  background: $white;
 }
 
 .dropdown {
@@ -32,7 +32,7 @@
 
 .multiValue {
   position: relative;
-  color: #fff;
+  color: $white;
   border-radius: 5rem !important;
   background: $blue !important;
   margin: 0 0.5rem 0 0 !important;
@@ -41,7 +41,7 @@
 .multiValueLabel {
   display: flex !important;
   align-items: center !important;
-  color: #fff !important;
+  color: $white !important;
   padding: 0.5rem 0.75rem !important;
 
   &::before {

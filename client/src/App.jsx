@@ -4,6 +4,7 @@ import Tasks from 'pages/Tasks/Tasks';
 import { Sidebar } from 'components/Sidebar';
 import { pathnames } from 'constants/pathnames';
 import styles from 'styles/main.scss';
+import { TaskPage } from 'pages/Tasks/TaskPage';
 
 export default function App() {
   const { dashboard, tasks } = pathnames;
@@ -18,6 +19,9 @@ export default function App() {
           </Route>
           <Route path={tasks} exact>
             <Tasks />
+          </Route>
+          <Route path={`${tasks}/:id`} exact>
+            <TaskPage />
           </Route>
         </Switch>
       </main>

@@ -1,0 +1,100 @@
+.timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  height: 2.5rem;
+  background: $lightGray;
+  border-radius: 5rem;
+}
+
+.timelineStart,
+.timelineEnd {
+  @extend %text;
+
+  padding: 0 1rem;
+}
+
+.timelineWrapper {
+  width: 100%;
+  height: 100%;
+  border-left: 0.1rem solid $gray;
+  border-right: 0.1rem solid $gray;
+}
+
+.timelineProgress {
+  position: relative;
+  background: $blue;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.timelineCurrentDate {
+  @extend %text-s;
+  @extend %border;
+
+  position: absolute;
+  padding: 0.25rem 0.5rem;
+  background: $white;
+  bottom: -125%;
+  right: -3.65rem;
+  transform: translateY(-50%);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -3%;
+    left: 50%;
+    width: 1rem;
+    height: 1rem;
+    background: $white;
+    border-top: 0.1rem solid rgba(0, 0, 0, 0.15);
+    border-left: 0.1rem solid rgba(0, 0, 0, 0.15);
+    transform: translate(-50%, -50%) rotate(45deg);
+    z-index: -1;
+  }
+}
+
+.title {
+  @extend %title-xl;
+
+  margin: 3.5rem 0 1rem;
+}
+
+.additionInformation {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .status {
+    @extend %text;
+
+    padding: 0.5rem 1rem;
+    color: $white;
+    border-radius: 0.5rem;
+  }
+}
+
+.description {
+  @extend %text;
+
+  margin: 1rem 0;
+  line-height: 1.4;
+
+  .code {
+    @extend %border;
+
+    font-family: monospace;
+    font-size: $smallFontSize;
+    padding: 0.25rem 0.5rem;
+    color: #ffa500;
+    background: #3c4047;
+    white-space: nowrap;
+
+    &Block {
+      display: block;
+      margin: 1rem 0;
+      width: auto;
+    }
+  }
+}

@@ -12,12 +12,12 @@
   @extend %border;
   @extend %text;
 
-  background: #fff;
+  background: $white;
   padding: 1rem 1.5rem;
   border-radius: 5rem;
 
   &:hover {
-    color: #fff;
+    color: $white;
     background: $blue;
   }
 }

@@ -7,7 +7,7 @@
   width: calc(100% / 3 - 1.34rem);
   min-width: 35rem;
   padding: 1rem;
-  background: #fff;
+  background: $white;
 
   .headerWrapper {
     display: flex;
@@ -38,7 +38,7 @@
 
   display: inline-block;
   padding: 0.5rem 0.75rem;
-  color: #fff;
+  color: $white;
   border-radius: 5rem;
   background: $blue;
   filter: grayscale(0.9);

@@ -42,7 +42,7 @@
   padding: 3rem;
   width: 70%;
   height: 70%;
-  background: #fff;
+  background: $white;
   transform: translateY(-50vh);
   transition: 0.7s;
 
@@ -68,7 +68,7 @@
   border-radius: 5rem;
 
   &:hover {
-    color: #fff;
+    color: $white;
     background-color: $blue;
   }
 }

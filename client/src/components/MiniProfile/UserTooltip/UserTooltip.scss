@@ -6,7 +6,7 @@
 //   top: -16rem;
 //   top: 0;
 //   left: 50%;
-//   background: #fff;
+//   background: $white;
 //   border-radius: 0.5rem;
 //   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 //   transform: translateX(-50%);
@@ -74,7 +74,7 @@
   padding: 2rem 1.5rem;
   border-radius: 1.5rem;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-  background-color: #fff;
+  background-color: $white;
   z-index: 99999999;
 
   &::before {
@@ -88,7 +88,7 @@
     bottom: -0.75rem;
     border-radius: 0.25rem;
     rotate: 45deg;
-    background-color: #fff;
+    background-color: $white;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
     z-index: -1;
   }
@@ -99,7 +99,7 @@
     position: absolute;
     left: 50%;
     bottom: 0;
-    background-color: #fff;
+    background-color: $white;
     transform: translateX(-50%);
     z-index: -1;
   }

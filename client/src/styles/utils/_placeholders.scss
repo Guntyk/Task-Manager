@@ -1,3 +1,9 @@
+%title-xl {
+  font-size: $titleExtraBigFontSize;
+  letter-spacing: 0.075rem;
+  line-height: 1.4;
+}
+
 %text {
   font-size: $regularFontSize;
   white-space: pre-line;
@@ -27,7 +33,7 @@
   justify-content: center;
   align-items: center;
   width: 3rem;
-  color: #fff;
+  color: $white;
   font-weight: 600;
   aspect-ratio: 1/1;
   user-select: none;
