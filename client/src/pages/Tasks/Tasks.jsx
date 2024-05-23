@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import useUsers from 'hooks/useUsers';
 import * as tasksSlice from '../../redux/features/tasksSlice';
 import { ErrorMessage } from 'components/ErrorMessage/ErrorMessage';
+import { CreateTask } from 'components/Modals/CreateTask';
 import { SearchBar } from 'components/SearchBar';
 import { Loader } from 'components/Loader';
-import { Modal } from 'components/Modal';
 import { TaskCard } from 'pages/Tasks/TaskCard';
 import styles from 'pages/Tasks/Tasks.scss';
 
@@ -30,10 +30,6 @@ export default function Tasks() {
     }
   }, []);
 
-  useEffect(() => {
-    console.log(tasks);
-  }, [tasks]);
-
   const uniqueTags = [...new Set(tasks.flatMap((task) => task.tags || []))].map((tag) => ({
     value: tag.toLowerCase(),
     label: tag,
@@ -57,7 +53,7 @@ export default function Tasks() {
         >
           Create task
         </button>
-        <Modal isOpen={isModalOpen} setIsOpen={setIsModalOpen} users={users} />
+        <CreateTask isOpen={isModalOpen} setIsOpen={setIsModalOpen} users={users} />
       </header>
       <SearchBar
         setSearchValue={setSearchValue}

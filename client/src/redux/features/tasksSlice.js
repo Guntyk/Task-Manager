@@ -30,7 +30,6 @@ export const createTask = createAsyncThunk('tasks/new', async (task, { rejectWit
 export const deleteTask = createAsyncThunk('tasks/delete', async (id, { rejectWithValue }) => {
   const { result, error } = await TasksService.deleteTask(id);
 
-  console.log(result);
   if (result) {
     return result;
   }
@@ -69,7 +68,7 @@ const tasksSlice = createSlice({
       })
       .addCase(createTask.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.tasks = action.payload;
+        state.tasks = [...state.tasks, action.payload];
         state.error = [];
       })
       .addCase(createTask.rejected, (state, action) => {

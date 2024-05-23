@@ -1,0 +1,133 @@
+.wrapper {
+  margin-top: 0.8rem;
+  position: relative;
+  width: 100%;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.dropdownLabel {
+  @extend %text-s;
+
+  position: absolute;
+  color: $gray;
+  top: 0rem;
+  left: 1rem;
+  padding: 0.2rem 0.5rem;
+  background: $white;
+  transform: translateY(-50%);
+  pointer-events: none;
+  transition: 0.2s;
+
+  &Active {
+    color: $blue;
+  }
+}
+
+.placeholder {
+  @extend %text;
+
+  color: $gray;
+  letter-spacing: 0.05rem;
+  line-height: 1.15;
+}
+
+.dropdownWrapper {
+  @extend %border;
+  @extend %text;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+
+  &Active {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.selectedOptionsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.8rem 1.2rem;
+}
+
+.dropdownBtn {
+  @extend %border;
+
+  color: $gray;
+  padding: 1.6rem 0;
+  line-height: 1;
+  border-radius: 0;
+
+  &:hover,
+  &:focus {
+    color: $blue;
+  }
+}
+
+.selectedOption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  transition: 0.2s;
+}
+
+.removeUserBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.3;
+
+  &:hover,
+  &:focus {
+    opacity: 0.5;
+  }
+}
+
+.deleteUserIcon {
+  width: 2.5rem;
+}
+
+.dropdownContent {
+  @extend %border;
+
+  position: absolute;
+  top: calc(100% + 0.05rem);
+  left: 0;
+  width: 100%;
+  background: $white;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: 0.2s;
+  overflow: hidden;
+  z-index: -5;
+
+  &Active {
+    transform: scaleY(1);
+    z-index: 5;
+  }
+}
+
+.dropdownItem {
+  padding: 0.8rem 1.2rem;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover,
+  &:focus {
+    outline: none;
+    background: $darkWhite;
+  }
+}
+
+.userName {
+  margin-left: 1rem;
+}

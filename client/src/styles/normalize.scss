@@ -11,10 +11,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-input:focus {
+input:not([type='range']):focus {
   outline: 1px solid $blue;
+}
+input::placeholder {
+  color: $gray;
 }
 
 button {
   transition: 0.15s;
+}
+
+textarea {
+  @extend %border;
+  @extend %text;
+
+  font-family: inherit;
+  outline: none;
+  border: none;
 }

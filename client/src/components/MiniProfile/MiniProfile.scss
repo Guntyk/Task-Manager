@@ -8,10 +8,13 @@
   &:first-child {
     margin-left: -1rem;
   }
-
   &:hover > div {
     opacity: 1;
     pointer-events: all;
+  }
+
+  &.avatarDropdown {
+    margin: 0;
   }
 }
 

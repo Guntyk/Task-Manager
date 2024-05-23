@@ -13,7 +13,7 @@ import clock from 'media/clock.svg';
 import styles from 'pages/Tasks/TaskCard/TaskCard.scss';
 
 export const TaskCard = ({
-  task: { id, title, creationDate, deadline, comments, executorsIds, status, subtasks, priority, tags, timeSpent },
+  task: { id, title, creationDate, deadline, comments, executors_ids, status, subtasks, priority, tags, timeSpent },
   setTagsList,
   usersList,
   isUsersRequestLoading,
@@ -24,12 +24,11 @@ export const TaskCard = ({
 
   useEffect(() => {
     if (usersList.length > 0) {
-      setExecutors([...new Set(executorsIds)].map((executorId) => usersList.find((user) => user.id === executorId)));
+      setExecutors([...new Set(executors_ids)].map((executorId) => usersList.find((user) => user.id === executorId)));
     }
   }, [usersList]);
 
   const handleTagClick = ({ target: { innerText } }) => {
-    console.log(innerText);
     const tag = {
       value: innerText.toLowerCase(),
       label: innerText,
@@ -53,10 +52,7 @@ export const TaskCard = ({
         <div className={styles.headerWrapper}>
           <div>
             <span className={styles.name}>
-              <div
-                className={styles.status}
-                style={{ background: statuses.find(({ name }) => name === status).color }}
-              />
+              <div className={styles.status} style={{ background: statuses.find(({ key }) => key === status).color }} />
               {title}
             </span>
             <span className={styles.date}>{formatTimestamp(creationDate)}</span>

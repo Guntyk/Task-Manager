@@ -1,18 +1,40 @@
 import cn from 'classnames';
 import { v4 } from 'uuid';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from 'components/Dropdown/Dropdown.scss';
-import { capitalizeFirstLetter } from 'helpers/capitalizeFirstLetter';
+import checkIcon from 'media/blue-check.svg';
+import { MiniProfile } from 'components/MiniProfile';
+import trashIcon from 'media/trash.svg';
 
-export const Dropdown = ({ multiple, setSelectedData, placeholderText, selectedData, labelText, options }) => {
+export const Dropdown = ({ setSelectedData, placeholderText, selectedData, labelText, options, usersType }) => {
   const [isActive, setIsActive] = useState(false);
 
   const addSelectedOption = (option) => {
-    if (multiple) {
-    } else {
-      console.log(option);
-      setSelectedData(option);
+    setIsActive(false);
+    setSelectedData(option);
+  };
+
+  const renderSingleUser = () => {
+    if (selectedData) {
+      return (
+        <span className={styles.option} key={selectedData.id}>
+          <MiniProfile user={{ name: selectedData.displayName, color: selectedData.color }} dropdownStyle />
+          {selectedData.displayName}
+          <button className={styles.deleteAssigneeBtn}>
+            <img src={trashIcon} alt='delete assignee' />
+          </button>
+        </span>
+      );
     }
+    return <span className={styles.placeholder}>{placeholderText}</span>;
+  };
+
+  const renderSingleOption = () => {
+    if (selectedData) {
+      const displayName = selectedData.displayName ? selectedData.displayName : selectedData;
+      return <span className={styles.selectedOption}>{displayName}</span>;
+    }
+    return <span className={styles.placeholder}>{placeholderText}</span>;
   };
 
   return (
@@ -29,6 +51,7 @@ export const Dropdown = ({ multiple, setSelectedData, placeholderText, selectedD
       <div
         className={cn(styles.dropdownBtn, {
           [styles.dropdownBtnActive]: isActive,
+          [styles.dropdownBtnUsers]: usersType,
         })}
         onClick={() => {
           setIsActive(!isActive);
@@ -41,18 +64,14 @@ export const Dropdown = ({ multiple, setSelectedData, placeholderText, selectedD
         role='button'
         tabIndex='0'
       >
-        {selectedData ? (
-          <span className={styles.selectedOption}>{selectedData?.value ? selectedData.value : selectedData}</span>
-        ) : (
-          <span className={styles.placeholder}>{placeholderText}</span>
-        )}
+        {usersType ? renderSingleUser() : renderSingleOption()}
       </div>
       <div
         className={cn(styles.dropdownContent, {
           [styles.dropdownContentActive]: isActive,
         })}
       >
-        {options ? (
+        {options.length > 0 ? (
           options.map((option) => (
             <div
               className={cn(styles.dropdownItem, {
@@ -61,21 +80,21 @@ export const Dropdown = ({ multiple, setSelectedData, placeholderText, selectedD
               key={v4()}
               onClick={() => {
                 addSelectedOption(option);
-                setIsActive(false);
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
-                  setIsActive(!isActive);
+                  addSelectedOption(option);
                 }
               }}
               role='button'
-              tabIndex='0'
+              tabIndex={isActive && selectedData?.value !== option.value ? 0 : -1}
             >
-              <span className={styles.option}>{capitalizeFirstLetter(option.value)}</span>
+              <span className={styles.option}>{option.displayName}</span>
+              {selectedData?.value === option.value && <img src={checkIcon} alt='selected option' />}
             </div>
           ))
         ) : (
-          <span>There is no options</span>
+          <div className={cn(styles.dropdownItem, styles.dropdownItemEmpty)}>There is no options</div>
         )}
       </div>
     </div>
