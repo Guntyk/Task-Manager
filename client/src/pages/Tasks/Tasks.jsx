@@ -25,7 +25,7 @@ export default function Tasks() {
     if (users.length === 0) {
       getUsers();
     }
-    if (tasks.length === 0) {
+    if (tasks.length <= 1) {
       dispatch(tasksSlice.getTasks());
     }
   }, []);

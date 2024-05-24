@@ -17,6 +17,16 @@ export const getTasks = createAsyncThunk('tasks', async (_, { rejectWithValue })
   return rejectWithValue(error || 'An error occurred while getting tasks data. Please try again later');
 });
 
+export const getTask = createAsyncThunk('tasks/:id', async (taskId, { rejectWithValue }) => {
+  const { result, error } = await TasksService.getTask(taskId);
+
+  if (result) {
+    return result;
+  }
+
+  return rejectWithValue(error || 'An error occurred while getting task data. Please try again later');
+});
+
 export const createTask = createAsyncThunk('tasks/new', async (task, { rejectWithValue }) => {
   const { result, error } = await TasksService.createTask(task);
 
@@ -59,6 +69,19 @@ const tasksSlice = createSlice({
         state.error = [];
       })
       .addCase(getTasks.rejected, (state, action) => {
+        state.isLoading = false;
+        state.tasks = [];
+        state.error = action.payload;
+      })
+      .addCase(getTask.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getTask.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.tasks = action.payload;
+        state.error = [];
+      })
+      .addCase(getTask.rejected, (state, action) => {
         state.isLoading = false;
         state.tasks = [];
         state.error = action.payload;

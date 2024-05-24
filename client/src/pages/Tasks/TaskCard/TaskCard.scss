@@ -8,6 +8,7 @@
   min-width: 35rem;
   padding: 1rem;
   background: $white;
+  cursor: pointer;
 
   .headerWrapper {
     display: flex;
@@ -23,6 +24,10 @@
         align-items: end;
       }
     }
+  }
+
+  &:hover {
+    outline: 0.1rem solid $blue;
   }
 }
 
@@ -112,11 +117,12 @@
   align-items: center;
   transition: 0.2s;
   gap: 0rem;
+
   &:hover {
     > span {
-      margin: 0 0.15rem;
+      margin: 0 0.15rem !important;
       &:first-child {
-        margin-right: 0;
+        margin-right: 0 !important;
       }
     }
     .executorsOverflow {
@@ -179,3 +185,9 @@
 //     transform: translateY(-50%) rotate(90deg);
 //   }
 // }
+
+.deleteTaskBtn {
+  &:hover {
+    color: $red;
+  }
+}

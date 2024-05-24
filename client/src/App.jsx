@@ -20,7 +20,7 @@ export default function App() {
           <Route path={tasks} exact>
             <Tasks />
           </Route>
-          <Route path={`${tasks}/:id`} exact>
+          <Route path={`${tasks}/:taskId`} exact>
             <TaskPage />
           </Route>
         </Switch>

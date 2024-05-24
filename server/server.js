@@ -151,16 +151,26 @@ app.post('/tasks/new', async (req, res) => {
 });
 
 // Get one task
-app.get('/tasks/:id', (req, res) => {
-  let sql = `SELECT * FROM tasks WHERE id = ${req.params.id}`;
-  let query = db.query(sql, (error, result) => {
-    if (error) {
-      console.log(error);
-    }
-    console.log(result);
-    res.send('Task fetched...');
-    res.send(result.title);
-  });
+app.get('/tasks/:id', async (req, res) => {
+  const query = `SELECT * FROM tasks WHERE id = ${req.params.id}`;
+
+  try {
+    const result = await pool.query(query);
+    console.log('Task retrieved');
+    console.log(result.rows);
+
+    res.status(200).json({
+      message: 'Task retrieved successfully',
+      data: result.rows,
+    });
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: 'Error getting task',
+      error: err.message,
+    });
+  }
 });
 
 // Update task

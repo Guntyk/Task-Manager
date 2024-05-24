@@ -11,6 +11,16 @@ export default class TasksService {
     return { result: data, error: null };
   }
 
+  static async getTask(taskId) {
+    const [error, { data }] = await backendApi.get(`/tasks/${taskId}`);
+
+    if (error) {
+      return { result: null, error };
+    }
+
+    return { result: data, error: null };
+  }
+
   static async createTask(taskObject) {
     const [error, { data }] = await backendApi.post('/tasks/new', taskObject);
 

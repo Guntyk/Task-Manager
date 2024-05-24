@@ -1,8 +1,10 @@
 import { useEffect, useId, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import * as tasksSlice from '../../../redux/features/tasksSlice';
 import { formatTimestamp } from 'helpers/formatTimestamp';
 import { convertSeconds } from 'helpers/convertSeconds';
+import { pathnames } from 'constants/pathnames';
 import { statuses } from 'constants/statuses';
 import { Loader } from 'components/MiniProfile/Loader/Loader';
 import { MiniProfile } from 'components/MiniProfile';
@@ -20,7 +22,10 @@ export const TaskCard = ({
 }) => {
   const [executors, setExecutors] = useState([]);
   const dispatch = useDispatch();
+  const { push } = useHistory();
   const tagId = useId();
+
+  const { tasks } = pathnames;
 
   useEffect(() => {
     if (usersList.length > 0) {
@@ -38,7 +43,7 @@ export const TaskCard = ({
   };
 
   return (
-    <div className={styles.taskCard}>
+    <div className={styles.taskCard} onClick={() => push(`${tasks}/${id}`)}>
       <div className={styles.header}>
         {tags && tags.length > 0 && (
           <div className={styles.tags}>
@@ -59,6 +64,7 @@ export const TaskCard = ({
           </div>
           <div>
             <button
+              className={styles.deleteTaskBtn}
               onClick={() => {
                 dispatch(tasksSlice.deleteTask(id));
               }}
@@ -90,7 +96,7 @@ export const TaskCard = ({
               <>
                 {executors.length > 5 && <span className={styles.executorsOverflow}>+{executors.length - 5}</span>}
                 {executors.slice(0, 5).map((executor) => (
-                  <MiniProfile user={executor} key={executor.id} />
+                  <MiniProfile user={executor} key={executor.id} collapseStyle />
                 ))}
               </>
             ) : (
