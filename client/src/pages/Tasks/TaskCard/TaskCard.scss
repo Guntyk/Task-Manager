@@ -14,15 +14,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
 
-    div {
+    & > div {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      &:last-child {
-        align-items: end;
+      &:first-child {
+        width: 100%;
       }
+    }
+
+    .datesWrapper {
+      display: flex;
+      justify-content: space-between;
     }
   }
 
@@ -68,6 +73,7 @@
   display: flex;
   align-items: start;
 }
+
 .status {
   margin-right: 0.5rem;
   margin-top: 0.3rem;
@@ -75,6 +81,7 @@
   aspect-ratio: 1/1;
   border-radius: 50%;
 }
+
 .date {
   color: $gray;
   font-size: 1.1rem;
@@ -187,7 +194,15 @@
 // }
 
 .deleteTaskBtn {
+  opacity: 0.3;
+
+  img {
+    width: 2.25rem;
+    height: 1rem;
+    object-fit: cover;
+  }
+
   &:hover {
-    color: $red;
+    opacity: 0.5;
   }
 }

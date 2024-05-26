@@ -2,9 +2,9 @@ import cn from 'classnames';
 import { v4 } from 'uuid';
 import { useState } from 'react';
 import styles from 'components/Dropdown/Dropdown.scss';
-import checkIcon from 'media/blue-check.svg';
+import checkIcon from 'images/blue-check.svg';
 import { MiniProfile } from 'components/MiniProfile';
-import trashIcon from 'media/trash.svg';
+import trashIcon from 'images/trash.svg';
 
 export const Dropdown = ({ setSelectedData, placeholderText, selectedData, labelText, options, usersType }) => {
   const [isActive, setIsActive] = useState(false);

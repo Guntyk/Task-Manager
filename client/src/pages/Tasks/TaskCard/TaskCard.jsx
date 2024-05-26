@@ -1,7 +1,5 @@
 import { useEffect, useId, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import * as tasksSlice from '../../../redux/features/tasksSlice';
 import { formatTimestamp } from 'helpers/formatTimestamp';
 import { convertSeconds } from 'helpers/convertSeconds';
 import { pathnames } from 'constants/pathnames';
@@ -9,10 +7,12 @@ import { statuses } from 'constants/statuses';
 import { Loader } from 'components/MiniProfile/Loader/Loader';
 import { MiniProfile } from 'components/MiniProfile';
 import { Priority } from 'components/Priority';
-import user from 'media/user-circle.svg';
-import message from 'media/message.svg';
-import clock from 'media/clock.svg';
+import taskActionsIcon from 'images/more-dots-horizontal.svg';
+import user from 'images/user-circle.svg';
+import message from 'images/message.svg';
+import clock from 'images/clock.svg';
 import styles from 'pages/Tasks/TaskCard/TaskCard.scss';
+import { TaskActions } from 'components/Modals/TaskActions';
 
 export const TaskCard = ({
   task: { id, title, creationDate, deadline, comments, executors_ids, status, subtasks, priority, tags, timeSpent },
@@ -20,8 +20,8 @@ export const TaskCard = ({
   usersList,
   isUsersRequestLoading,
 }) => {
+  const [isActionsOpened, setIsActionsOpened] = useState(false);
   const [executors, setExecutors] = useState([]);
-  const dispatch = useDispatch();
   const { push } = useHistory();
   const tagId = useId();
 
@@ -43,7 +43,7 @@ export const TaskCard = ({
   };
 
   return (
-    <div className={styles.taskCard} onClick={() => push(`${tasks}/${id}`)}>
+    <div className={styles.taskCard}>
       <div className={styles.header}>
         {tags && tags.length > 0 && (
           <div className={styles.tags}>
@@ -55,24 +55,21 @@ export const TaskCard = ({
           </div>
         )}
         <div className={styles.headerWrapper}>
-          <div>
+          <div onClick={() => push(`${tasks}/${id}`)}>
             <span className={styles.name}>
               <div className={styles.status} style={{ background: statuses.find(({ key }) => key === status).color }} />
               {title}
             </span>
-            <span className={styles.date}>{formatTimestamp(creationDate)}</span>
+            <div className={styles.datesWrapper}>
+              <span className={styles.date}>{formatTimestamp(creationDate)}</span>
+              {deadline && <span className={styles.date}>{formatTimestamp(deadline)}</span>}
+            </div>
           </div>
           <div>
-            <button
-              className={styles.deleteTaskBtn}
-              onClick={() => {
-                dispatch(tasksSlice.deleteTask(id));
-              }}
-            >
-              Delete
+            <button className={styles.deleteTaskBtn} onClick={() => setIsActionsOpened(!isActionsOpened)}>
+              <img src={taskActionsIcon} alt='task actions menu' />
             </button>
             <Priority number={priority || 1} />
-            <span className={styles.date}>{deadline && formatTimestamp(deadline)}</span>
           </div>
         </div>
       </div>
@@ -121,6 +118,7 @@ export const TaskCard = ({
           </div>
         </>
       )}
+      <TaskActions taskId={id} isOpened={isActionsOpened} />
     </div>
   );
 };

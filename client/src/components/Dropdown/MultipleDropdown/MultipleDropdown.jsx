@@ -2,7 +2,7 @@ import cn from 'classnames';
 import { v4 } from 'uuid';
 import { useState } from 'react';
 import { MiniProfile } from 'components/MiniProfile';
-import minusIcon from 'media/minus.svg';
+import minusIcon from 'images/minus.svg';
 import styles from 'components/Dropdown/MultipleDropdown/MultipleDropdown.scss';
 
 export const MultipleDropdown = ({ setSelectedData, placeholderText, selectedData, labelText, options, usersType }) => {

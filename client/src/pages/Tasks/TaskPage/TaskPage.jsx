@@ -1,24 +1,24 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import cn from 'classnames';
+import * as tasksSlice from '../../../redux/features/tasksSlice';
+import useUsers from 'hooks/useUsers';
 import { Priority } from 'components/Priority';
 import { statuses } from 'constants/statuses';
 import { calculateCompletionPercentage } from 'helpers/calculateCompletionPercentage';
 import { formatTimestamp } from 'helpers/formatTimestamp';
-import styles from 'pages/Tasks/TaskPage/TaskPage.scss';
-import { useDispatch, useSelector } from 'react-redux';
-import useUsers from 'hooks/useUsers';
-import * as tasksSlice from '../../../redux/features/tasksSlice';
-import { useParams } from 'react-router-dom';
-import { Loader } from 'components/Loader';
-import user from 'media/user-circle.svg';
+import { ErrorMessage } from 'components/ErrorMessage/ErrorMessage';
 import { MiniProfile } from 'components/MiniProfile';
+import { Loader } from 'components/Loader';
+import user from 'images/user-circle.svg';
+import styles from 'pages/Tasks/TaskPage/TaskPage.scss';
 
 export const TaskPage = () => {
   const [task, setTask] = useState(null);
   const { taskId } = useParams();
   const dispatch = useDispatch();
 
-  const { id, title, priority, status, executors_ids, description, creationDate, deadline } = task || {};
+  const { title, priority, status, executors_ids, description, creationDate, deadline } = task || {};
 
   const { getUsers, users, isRequestLoading: isUsersRequestLoading, requestError: usersRequestError } = useUsers();
   const isTasksRequestLoading = useSelector((state) => state.tasks.isLoading);
@@ -85,6 +85,8 @@ export const TaskPage = () => {
           <Loader />
         </div>
       )}
+      {tasksRequestError && <ErrorMessage errorText={tasksRequestError.message} />}
+      {usersRequestError && <ErrorMessage errorText={usersRequestError.message} />}
     </section>
   );
 };

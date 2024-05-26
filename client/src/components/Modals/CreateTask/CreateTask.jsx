@@ -6,7 +6,7 @@ import { priorityColors } from 'constants/priorityColors';
 import { statuses } from 'constants/statuses';
 import { ErrorMessage } from 'components/ErrorMessage/ErrorMessage';
 import { Dropdown } from 'components/Dropdown';
-import crossIcon from 'media/cross.svg';
+import crossIcon from 'images/cross.svg';
 import styles from 'components/Modals/CreateTask/CreateTask.scss';
 import { MultipleDropdown } from 'components/Dropdown/MultipleDropdown';
 

@@ -1,0 +1,32 @@
+.modal {
+  @extend %border;
+
+  position: absolute;
+  right: -1.5rem;
+  top: 2.5rem;
+  pointer-events: none;
+  opacity: 0;
+  background: $white;
+
+  &Opened {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  &Btn {
+    @extend %text;
+
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.2rem;
+
+    &:hover {
+      background: $darkWhite;
+    }
+
+    img {
+      height: 2rem;
+    }
+  }
+}
