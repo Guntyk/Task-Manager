@@ -107,6 +107,15 @@
   width: 100%;
   min-height: 10rem;
   resize: vertical;
+
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 0.75rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $lightGray;
+    border-radius: 5rem;
+  }
 }
 
 .priority {
@@ -179,6 +188,17 @@
       outline: 0.1rem solid $blue;
     }
   }
+}
+
+.datesWrapper {
+  @extend %text-s;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: -1rem;
+  color: $gray;
 }
 
 .sendBtn {

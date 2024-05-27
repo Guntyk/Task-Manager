@@ -7,6 +7,7 @@
   pointer-events: none;
   opacity: 0;
   background: $white;
+  transition: 0.2s;
 
   &Opened {
     opacity: 1;
@@ -20,8 +21,14 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.8rem 1.2rem;
+    width: 100%;
 
-    &:hover {
+    &:not(:last-child) {
+      border-bottom: 0.1rem solid $darkWhite;
+    }
+
+    &:hover,
+    &:focus {
       background: $darkWhite;
     }
 

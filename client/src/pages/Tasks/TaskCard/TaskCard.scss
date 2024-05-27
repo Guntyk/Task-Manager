@@ -24,11 +24,6 @@
         width: 100%;
       }
     }
-
-    .datesWrapper {
-      display: flex;
-      justify-content: space-between;
-    }
   }
 
   &:hover {
@@ -83,8 +78,20 @@
 }
 
 .date {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
   color: $gray;
   font-size: 1.1rem;
+
+  img {
+    margin-top: -0.2rem;
+    opacity: 0.3;
+  }
+
+  &Expiring {
+    color: $red;
+  }
 }
 
 .line {

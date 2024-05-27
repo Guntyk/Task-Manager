@@ -37,6 +37,16 @@ export const createTask = createAsyncThunk('tasks/new', async (task, { rejectWit
   return rejectWithValue(error || 'An error occurred while creating a task. Please try again later');
 });
 
+export const editTask = createAsyncThunk('tasks/edit', async ({ updatedTask, id }, { rejectWithValue }) => {
+  const { result, error } = await TasksService.editTask(updatedTask, id);
+
+  if (result) {
+    return result;
+  }
+
+  return rejectWithValue(error || 'An error occurred while editing a task. Please try again later');
+});
+
 export const deleteTask = createAsyncThunk('tasks/delete', async (id, { rejectWithValue }) => {
   const { result, error } = await TasksService.deleteTask(id);
 
@@ -56,6 +66,11 @@ const tasksSlice = createSlice({
     },
     resetError: (state) => {
       state.error = null;
+    },
+    sortByCreationDate: (state) => {
+      state.tasks.sort((a, b) => {
+        return new Date(b.creationDate) - new Date(a.creationDate);
+      });
     },
   },
   extraReducers: (builder) => {
@@ -91,10 +106,23 @@ const tasksSlice = createSlice({
       })
       .addCase(createTask.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.tasks = [...state.tasks, action.payload];
+        state.tasks = [action.payload, ...state.tasks];
         state.error = [];
       })
       .addCase(createTask.rejected, (state, action) => {
+        state.isLoading = false;
+        state.tasks = [];
+        state.error = action.payload;
+      })
+      .addCase(editTask.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editTask.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.tasks = state.tasks.map((task) => (task.id === action.payload.id ? action.payload : task));
+        state.error = [];
+      })
+      .addCase(editTask.rejected, (state, action) => {
         state.isLoading = false;
         state.tasks = [];
         state.error = action.payload;

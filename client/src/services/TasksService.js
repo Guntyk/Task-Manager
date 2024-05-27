@@ -31,6 +31,16 @@ export default class TasksService {
     return { result: data, error: null };
   }
 
+  static async editTask(updatedTask, id) {
+    const [error, { data }] = await backendApi.put(`/tasks/edit/${id}`, updatedTask);
+
+    if (error) {
+      return { result: null, error };
+    }
+
+    return { result: data, error: null };
+  }
+
   static async deleteTask(id) {
     const [error, { data }] = await backendApi.delete(`/tasks/delete/${id}`);
 

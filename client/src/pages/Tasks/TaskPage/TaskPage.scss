@@ -1,9 +1,63 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.actionsWrapper {
+  display: flex;
+  gap: 1rem;
+}
+
+.backBtn {
+  @extend %text;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  img {
+    height: 2rem;
+  }
+}
+
+.actionBtn {
+  @extend %border;
+  @extend %text;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.2rem;
+
+  &.editBtn:hover,
+  &.editBtn:focus {
+    outline: 0.1rem solid $blue;
+    color: $white;
+    background: $blue;
+  }
+  &.deleteBtn:hover,
+  &.deleteBtn:focus {
+    outline: 0.1rem solid $red;
+    color: $white;
+    background: $red;
+  }
+
+  &.editBtn:active {
+    background: $darkBlue;
+  }
+  &.deleteBtn:active {
+    background: $darkRed;
+  }
+}
+
 .timeline {
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
-  margin-bottom: 3.5rem;
+  margin: 1.5rem 0 3.5rem;
   height: 2.5rem;
   background: $lightGray;
   border-radius: 5rem;
@@ -86,6 +140,16 @@
   img {
     max-height: 3.5rem;
   }
+}
+
+.datesWrapper {
+  @extend %text-s;
+
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  margin: 2rem 0 1.5rem;
+  color: $gray;
 }
 
 .description {

@@ -1,31 +1,30 @@
 import { useEffect, useId, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { formatTimestamp } from 'helpers/formatTimestamp';
-import { convertSeconds } from 'helpers/convertSeconds';
+import { formatDateTimestamp } from 'helpers/formatTime/formatTimestamp/formatDateTimestamp';
+import { formatSecondsToHHMM } from 'helpers/formatTime/formatSecondsToHHMM';
 import { pathnames } from 'constants/pathnames';
 import { statuses } from 'constants/statuses';
 import { Loader } from 'components/MiniProfile/Loader/Loader';
+import { TaskAuthoring } from 'components/Modals/TaskAuthoring';
+import { TaskActions } from 'components/Modals/TaskActions';
 import { MiniProfile } from 'components/MiniProfile';
 import { Priority } from 'components/Priority';
 import taskActionsIcon from 'images/more-dots-horizontal.svg';
+import deadlineIcon from 'images/deadline.svg';
 import user from 'images/user-circle.svg';
 import message from 'images/message.svg';
 import clock from 'images/clock.svg';
 import styles from 'pages/Tasks/TaskCard/TaskCard.scss';
-import { TaskActions } from 'components/Modals/TaskActions';
 
-export const TaskCard = ({
-  task: { id, title, creationDate, deadline, comments, executors_ids, status, subtasks, priority, tags, timeSpent },
-  setTagsList,
-  usersList,
-  isUsersRequestLoading,
-}) => {
+export const TaskCard = ({ task, setTagsList, usersList, isUsersRequestLoading }) => {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isActionsOpened, setIsActionsOpened] = useState(false);
   const [executors, setExecutors] = useState([]);
   const { push } = useHistory();
+  const { tasks } = pathnames;
   const tagId = useId();
 
-  const { tasks } = pathnames;
+  const { id, title, deadline, comments, executors_ids, status, subtasks, priority, tags, time_spent } = task || {};
 
   useEffect(() => {
     if (usersList.length > 0) {
@@ -60,10 +59,12 @@ export const TaskCard = ({
               <div className={styles.status} style={{ background: statuses.find(({ key }) => key === status).color }} />
               {title}
             </span>
-            <div className={styles.datesWrapper}>
-              <span className={styles.date}>{formatTimestamp(creationDate)}</span>
-              {deadline && <span className={styles.date}>{formatTimestamp(deadline)}</span>}
-            </div>
+            {deadline && (
+              <span className={styles.date}>
+                <img width={15} height={15} src={deadlineIcon} alt='deadline icon' />
+                {formatDateTimestamp(deadline)}
+              </span>
+            )}
           </div>
           <div>
             <button className={styles.deleteTaskBtn} onClick={() => setIsActionsOpened(!isActionsOpened)}>
@@ -82,10 +83,14 @@ export const TaskCard = ({
               <span>{comments.length}</span>
             </div>
           )}
-          <div className={styles.additionDataElement}>
-            <img width={15} height={15} src={clock} alt='clock' />
-            <span>{timeSpent ? convertSeconds(timeSpent) : '00:00'}</span>
-          </div>
+          {time_spent ? (
+            <div className={styles.additionDataElement}>
+              <img width={15} height={15} src={clock} alt='clock' />
+              <span>{formatSecondsToHHMM(time_spent)}</span>
+            </div>
+          ) : (
+            '00:00'
+          )}
         </div>
         <div className={styles.executors}>
           {!isUsersRequestLoading ? (
@@ -118,7 +123,13 @@ export const TaskCard = ({
           </div>
         </>
       )}
-      <TaskActions taskId={id} isOpened={isActionsOpened} />
+      <TaskActions
+        taskId={id}
+        isOpened={isActionsOpened}
+        setIsOpened={setIsActionsOpened}
+        setIsEditModalOpen={setIsEditModalOpen}
+      />
+      <TaskAuthoring task={task} isOpened={isEditModalOpen} setIsOpened={setIsEditModalOpen} />
     </div>
   );
 };

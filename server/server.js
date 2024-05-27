@@ -101,7 +101,7 @@ app.get('/tasks', async (req, res) => {
 
 // Create task
 app.post('/tasks/new', async (req, res) => {
-  const { title, status, executors_ids, priority, description, deadline } = req.body;
+  const { title, status, executors_ids, priority, description, deadline, pinned, time_spent } = req.body;
   const values = [title];
   let query = `INSERT INTO tasks (title`;
 
@@ -124,6 +124,14 @@ app.post('/tasks/new', async (req, res) => {
   if (deadline !== undefined) {
     query += `, deadline`;
     values.push(deadline);
+  }
+  if (pinned !== undefined) {
+    query += `, pinned`;
+    values.push(pinned);
+  }
+  if (time_spent !== undefined) {
+    query += `, time_spent`;
+    values.push(time_spent);
   }
 
   query += `) VALUES ($1`;
@@ -174,16 +182,66 @@ app.get('/tasks/:id', async (req, res) => {
 });
 
 // Update task
-app.get('/tasks/update/:id', (req, res) => {
-  let newTitle = 'Updated Title 35';
-  let sql = `UPDATE tasks SET title = '${newTitle}' WHERE id = ${req.params.id}`;
-  let query = db.query(sql, (error, result) => {
-    if (error) {
-      console.log(error);
-    }
-    console.log(result);
-    res.send('Task updated...');
-  });
+app.put('/tasks/edit/:id', async (req, res) => {
+  const { id } = req.params;
+  const { title, status, priority, executors_ids, description, deadline, pinned, time_spent } = req.body;
+
+  let updateFields = [];
+  let values = [];
+  let valueIndex = 1;
+
+  if (title !== undefined) {
+    updateFields.push(`title = $${valueIndex++}`);
+    values.push(title);
+  }
+  if (status !== undefined) {
+    updateFields.push(`status = $${valueIndex++}`);
+    values.push(status);
+  }
+  if (priority !== undefined) {
+    updateFields.push(`priority = $${valueIndex++}`);
+    values.push(priority);
+  }
+  if (executors_ids !== undefined) {
+    updateFields.push(`executors_ids = $${valueIndex++}`);
+    values.push(executors_ids);
+  }
+  if (description !== undefined) {
+    updateFields.push(`description = $${valueIndex++}`);
+    values.push(description);
+  }
+  if (deadline !== undefined) {
+    updateFields.push(`deadline = $${valueIndex++}`);
+    values.push(deadline);
+  }
+  if (pinned !== undefined) {
+    updateFields.push(`pinned = $${valueIndex++}`);
+    values.push(pinned);
+  }
+  if (time_spent !== undefined) {
+    updateFields.push(`time_spent = $${valueIndex++}`);
+    values.push(time_spent);
+  }
+  updateFields.push(`last_edit = $${valueIndex++}`);
+  values.push(new Date());
+
+  values.push(id);
+
+  if (updateFields.length === 0) {
+    return res.status(400).json({ message: 'No fields to update' });
+  }
+
+  const query = `UPDATE tasks SET ${updateFields.join(', ')} WHERE id = $${valueIndex} RETURNING *`;
+
+  try {
+    const result = await pool.query(query, values);
+    console.log('Task updated');
+
+    res.status(200).json({ message: 'Task updated successfully', data: result.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error updating task', error: err.message });
+  }
 });
 
 // Delete task
@@ -206,17 +264,24 @@ app.delete('/tasks/delete/:id', async (req, res) => {
   }
 });
 
-async function deleteTask(id) {
-  const query = 'DELETE FROM tasks WHERE id = $1';
-  await pool.query(query, [id]);
-  console.log('Task deleted');
-}
-
 async function getTasks() {
   const query = 'SELECT * FROM tasks';
   const result = await pool.query(query);
   console.log('Tasks received');
   return result.rows;
+}
+
+async function editTask(newTaskData) {
+  const query = 'SELECT * FROM tasks';
+  const result = await pool.query(query);
+  console.log('Tasks received');
+  return result.rows;
+}
+
+async function deleteTask(id) {
+  const query = 'DELETE FROM tasks WHERE id = $1';
+  await pool.query(query, [id]);
+  console.log('Task deleted');
 }
 
 app.listen(4000);

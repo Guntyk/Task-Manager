@@ -1,18 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import useUsers from 'hooks/useUsers';
 import * as tasksSlice from '../../redux/features/tasksSlice';
+import * as usersSlice from '../../redux/features/usersSlice';
 import { ErrorMessage } from 'components/ErrorMessage/ErrorMessage';
-import { CreateTask } from 'components/Modals/CreateTask';
+import { TaskAuthoring } from 'components/Modals/TaskAuthoring';
 import { SearchBar } from 'components/SearchBar';
 import { Loader } from 'components/Loader';
 import { TaskCard } from 'pages/Tasks/TaskCard';
 import styles from 'pages/Tasks/Tasks.scss';
 
 export default function Tasks() {
-  const { getUsers, users, isRequestLoading: isUsersRequestLoading, requestError: usersRequestError } = useUsers();
   const [searchedStatus, setStatusesList] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [tagsList, setTagsList] = useState([]);
   const dispatch = useDispatch();
@@ -21,14 +20,24 @@ export default function Tasks() {
   const tasksRequestError = useSelector((state) => state.tasks.error);
   const tasks = useSelector((state) => state.tasks.tasks);
 
+  const isUsersRequestLoading = useSelector((state) => state.users.isLoading);
+  const usersRequestError = useSelector((state) => state.users.error);
+  const users = useSelector((state) => state.users.users);
+
   useEffect(() => {
     if (users.length === 0) {
-      getUsers();
+      dispatch(usersSlice.getUsers());
     }
     if (tasks.length <= 1) {
       dispatch(tasksSlice.getTasks());
     }
   }, []);
+
+  useEffect(() => {
+    if (tasks && tasks.length > 1) {
+      dispatch(tasksSlice.actions.sortByCreationDate());
+    }
+  }, [tasks]);
 
   const uniqueTags = [...new Set(tasks.flatMap((task) => task.tags || []))].map((tag) => ({
     value: tag.toLowerCase(),
@@ -45,15 +54,10 @@ export default function Tasks() {
     <section className={styles.tasksPage}>
       <header className={styles.header}>
         <h2 className={styles.title}>Tasks</h2>
-        <button
-          className={styles.createTaskBtn}
-          onClick={() => {
-            setIsModalOpen(!isModalOpen);
-          }}
-        >
+        <button className={styles.createTaskBtn} onClick={() => setIsCreateTaskModalOpen(!isCreateTaskModalOpen)}>
           Create task
         </button>
-        <CreateTask isOpen={isModalOpen} setIsOpen={setIsModalOpen} users={users} />
+        <TaskAuthoring isOpened={isCreateTaskModalOpen} setIsOpened={setIsCreateTaskModalOpen} />
       </header>
       <SearchBar
         setSearchValue={setSearchValue}
