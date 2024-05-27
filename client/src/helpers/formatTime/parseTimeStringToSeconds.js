@@ -14,5 +14,5 @@ export const parseTimeStringToSeconds = (timeString) => {
     }
   }
 
-  return null;
+  return 0;
 };
