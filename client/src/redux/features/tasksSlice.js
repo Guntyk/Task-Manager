@@ -7,55 +7,30 @@ const initialState = {
   isLoading: false,
 };
 
-export const getTasks = createAsyncThunk('tasks', async (_, { rejectWithValue }) => {
-  const { result, error } = await TasksService.getTasks();
+const handleAsyncThunk = async (serviceMethod, payload, rejectWithValue) => {
+  const { result, error } = await serviceMethod(payload);
+  return result ? result : rejectWithValue(error || 'An error occurred. Please try again later.');
+};
 
-  if (result) {
-    return result;
-  }
+export const getTasks = createAsyncThunk('tasks', (_, { rejectWithValue }) =>
+  handleAsyncThunk(TasksService.getTasks, undefined, rejectWithValue)
+);
+export const getTask = createAsyncThunk('tasks/:id', (taskId, { rejectWithValue }) =>
+  handleAsyncThunk(TasksService.getTask, taskId, rejectWithValue)
+);
+export const createTask = createAsyncThunk('tasks/new', (task, { rejectWithValue }) =>
+  handleAsyncThunk(TasksService.createTask, task, rejectWithValue)
+);
+export const editTask = createAsyncThunk('tasks/edit', ({ updatedTask, id }, { rejectWithValue }) =>
+  handleAsyncThunk(TasksService.editTask, { updatedTask, id }, rejectWithValue)
+);
+export const deleteTask = createAsyncThunk('tasks/delete', (id, { rejectWithValue }) =>
+  handleAsyncThunk(TasksService.deleteTask, id, rejectWithValue)
+);
 
-  return rejectWithValue(error || 'An error occurred while getting tasks data. Please try again later');
-});
-
-export const getTask = createAsyncThunk('tasks/:id', async (taskId, { rejectWithValue }) => {
-  const { result, error } = await TasksService.getTask(taskId);
-
-  if (result) {
-    return result;
-  }
-
-  return rejectWithValue(error || 'An error occurred while getting task data. Please try again later');
-});
-
-export const createTask = createAsyncThunk('tasks/new', async (task, { rejectWithValue }) => {
-  const { result, error } = await TasksService.createTask(task);
-
-  if (result) {
-    return result;
-  }
-
-  return rejectWithValue(error || 'An error occurred while creating a task. Please try again later');
-});
-
-export const editTask = createAsyncThunk('tasks/edit', async ({ updatedTask, id }, { rejectWithValue }) => {
-  const { result, error } = await TasksService.editTask(updatedTask, id);
-
-  if (result) {
-    return result;
-  }
-
-  return rejectWithValue(error || 'An error occurred while editing a task. Please try again later');
-});
-
-export const deleteTask = createAsyncThunk('tasks/delete', async (id, { rejectWithValue }) => {
-  const { result, error } = await TasksService.deleteTask(id);
-
-  if (result) {
-    return result;
-  }
-
-  return rejectWithValue(error || 'An error occurred while deleting a task. Please try again later');
-});
+const sortTasks = (state, compareFn) => {
+  state.tasks.sort(compareFn);
+};
 
 const tasksSlice = createSlice({
   name: 'tasks',
@@ -67,94 +42,57 @@ const tasksSlice = createSlice({
     resetError: (state) => {
       state.error = null;
     },
-    sortByCreationDate: (state) => {
-      state.tasks.sort((a, b) => {
-        return new Date(b.creationDate) - new Date(a.creationDate);
-      });
-    },
-    sortByPriority: (state, { payload }) => {
-      state.tasks.sort((a, b) => {
-        return payload === 0 ? b.priority - a.priority : a.priority - b.priority;
-      });
-    },
-    sortByDeadline: (state, { payload }) => {
-      state.tasks.sort((a, b) => {
+    sortByCreationDate: (state) => sortTasks(state, (a, b) => new Date(b.creationDate) - new Date(a.creationDate)),
+    sortByPriority: (state, { payload }) =>
+      sortTasks(state, (a, b) => (payload === 0 ? b.priority - a.priority : a.priority - b.priority)),
+    sortByDeadline: (state, { payload }) =>
+      sortTasks(state, (a, b) => {
         if (!a.deadline) return 1;
         if (!b.deadline) return -1;
-
         return payload === 0
           ? new Date(a.deadline) - new Date(b.deadline)
           : new Date(b.deadline) - new Date(a.deadline);
-      });
-    },
+      }),
   },
   extraReducers: (builder) => {
+    const pendingReducer = (state) => {
+      state.isLoading = true;
+      state.error = null;
+    };
+    const fulfilledReducer = (state, action) => {
+      state.isLoading = false;
+      state.tasks = action.payload;
+    };
+    const rejectedReducer = (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    };
+
     builder
-      .addCase(getTasks.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getTasks.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.tasks = action.payload;
-        state.error = [];
-      })
-      .addCase(getTasks.rejected, (state, action) => {
-        state.isLoading = false;
-        state.tasks = [];
-        state.error = action.payload;
-      })
-      .addCase(getTask.pending, (state) => {
-        state.isLoading = true;
-      })
+      .addCase(getTasks.pending, pendingReducer)
+      .addCase(getTasks.fulfilled, fulfilledReducer)
+      .addCase(getTasks.rejected, rejectedReducer)
+      .addCase(getTask.pending, pendingReducer)
       .addCase(getTask.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.tasks = action.payload;
-        state.error = [];
+        state.tasks = [action.payload, ...state.tasks];
       })
-      .addCase(getTask.rejected, (state, action) => {
-        state.isLoading = false;
-        state.tasks = [];
-        state.error = action.payload;
-      })
-      .addCase(createTask.pending, (state) => {
-        state.isLoading = true;
-      })
+      .addCase(getTask.rejected, rejectedReducer)
+      .addCase(createTask.pending, pendingReducer)
       .addCase(createTask.fulfilled, (state, action) => {
         state.isLoading = false;
         state.tasks = [action.payload, ...state.tasks];
-        state.error = [];
       })
-      .addCase(createTask.rejected, (state, action) => {
-        state.isLoading = false;
-        state.tasks = [];
-        state.error = action.payload;
-      })
-      .addCase(editTask.pending, (state) => {
-        state.isLoading = true;
-      })
+      .addCase(createTask.rejected, rejectedReducer)
+      .addCase(editTask.pending, pendingReducer)
       .addCase(editTask.fulfilled, (state, action) => {
         state.isLoading = false;
         state.tasks = state.tasks.map((task) => (task.id === action.payload.id ? action.payload : task));
-        state.error = [];
       })
-      .addCase(editTask.rejected, (state, action) => {
-        state.isLoading = false;
-        state.tasks = [];
-        state.error = action.payload;
-      })
-      .addCase(deleteTask.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(deleteTask.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.tasks = action.payload;
-        state.error = [];
-      })
-      .addCase(deleteTask.rejected, (state, action) => {
-        state.isLoading = false;
-        state.tasks = [];
-        state.error = action.payload;
-      });
+      .addCase(editTask.rejected, rejectedReducer)
+      .addCase(deleteTask.pending, pendingReducer)
+      .addCase(deleteTask.fulfilled, fulfilledReducer)
+      .addCase(deleteTask.rejected, rejectedReducer);
   },
 });
 
