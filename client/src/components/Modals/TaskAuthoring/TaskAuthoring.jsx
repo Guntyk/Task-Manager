@@ -14,6 +14,8 @@ import { ErrorMessage } from 'components/ErrorMessage/ErrorMessage';
 import { Dropdown } from 'components/Dropdown';
 import crossIcon from 'images/cross.svg';
 import styles from 'components/Modals/TaskAuthoring/TaskAuthoring.scss';
+import { DateInput } from 'components/Inputs/DateInput';
+import { Toggle } from 'components/Toggle';
 
 export const TaskAuthoring = ({ task, isOpened, setIsOpened }) => {
   const { id, title, priority, status, executors_ids, description, creationDate, deadline, last_edit, time_spent } =
@@ -21,6 +23,8 @@ export const TaskAuthoring = ({ task, isOpened, setIsOpened }) => {
 
   const [timeSpentString, setTimeSpentString] = useState(time_spent ? formatSecondsToHHMM(time_spent) : '');
   const [selectedStatus, setSelectedStatus] = useState({ id: 1, displayName: 'Todo', value: 'TODO' });
+  const [selectedDeadline, setSelectedDeadline] = useState(deadline || '');
+  const [deadlineRelevance, setDeadlineRelevance] = useState(deadline ? true : false);
   const [selectedPriority, setSelectedPriority] = useState(1);
   const users = useSelector((state) => state.users.users);
   const [executors, setExecutors] = useState([]);
@@ -47,6 +51,7 @@ export const TaskAuthoring = ({ task, isOpened, setIsOpened }) => {
     executors_ids: executors.map(({ id }) => id).sort(),
     description: description.value,
     time_spent: parseTimeStringToSeconds(timeSpentString),
+    deadline: deadlineRelevance ? selectedDeadline : null,
   });
 
   const handleSubmit = async (e) => {
@@ -59,7 +64,7 @@ export const TaskAuthoring = ({ task, isOpened, setIsOpened }) => {
     }
 
     const newTask = generateTaskObject(e.target);
-
+    console.log(newTask);
     if (task) {
       dispatch(tasksSlice.editTask({ updatedTask: newTask, id }));
     } else {
@@ -76,6 +81,7 @@ export const TaskAuthoring = ({ task, isOpened, setIsOpened }) => {
     setSelectedPriority(1);
     setSelectedStatus({ id: 1, displayName: 'Todo', value: 'TODO' });
     setExecutors([]);
+    setSelectedDeadline('');
     setError(false);
   };
 
@@ -131,6 +137,15 @@ export const TaskAuthoring = ({ task, isOpened, setIsOpened }) => {
               options={users.length > 0 && formatUsersToDropdown(users)}
               usersType
             />
+          </div>
+          <div className={styles.deadline}>
+            <div className={styles.deadlineRelevanceWrapper}>
+              <span>Deadline</span>
+              <Toggle defaultChecked={deadlineRelevance} setIsActive={setDeadlineRelevance} />
+            </div>
+            <div className={cn(styles.deadlineInput, { [styles.deadlineInputRelevant]: deadlineRelevance })}>
+              <DateInput date={selectedDeadline} setDate={setSelectedDeadline} />
+            </div>
           </div>
           <div className={styles.priority}>
             <span>Priority</span>

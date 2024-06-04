@@ -6,7 +6,7 @@ import checkIcon from 'images/blue-check.svg';
 import { MiniProfile } from 'components/MiniProfile';
 import trashIcon from 'images/trash.svg';
 
-export const Dropdown = ({ setSelectedData, placeholderText, selectedData, labelText, options, usersType }) => {
+export const Dropdown = ({ setSelectedData, placeholderText, selectedData, labelText, options, usersType, dateStyle }) => {
   const [isActive, setIsActive] = useState(false);
 
   const addSelectedOption = (option) => {
@@ -52,6 +52,7 @@ export const Dropdown = ({ setSelectedData, placeholderText, selectedData, label
         className={cn(styles.dropdownBtn, {
           [styles.dropdownBtnActive]: isActive,
           [styles.dropdownBtnUsers]: usersType,
+          [styles.dropdownBtnDate]: dateStyle,
         })}
         onClick={() => {
           setIsActive(!isActive);

@@ -102,6 +102,32 @@
   width: 100%;
 }
 
+.deadline {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+
+  &RelevanceWrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &Input {
+    max-height: 0;
+    opacity: 0;
+    transition: 0.3s;
+    pointer-events: none;
+
+    &Relevant {
+      max-height: 6rem;
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+}
+
 .description {
   padding: 1rem;
   width: 100%;
