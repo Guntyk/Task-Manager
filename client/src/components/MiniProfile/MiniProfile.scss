@@ -18,6 +18,13 @@
   &.avatarDropdown {
     margin: 0;
   }
+
+  &.big {
+    @extend %text-l;
+
+    width: unset;
+    padding: 0.75rem;
+  }
 }
 
 .avatar {

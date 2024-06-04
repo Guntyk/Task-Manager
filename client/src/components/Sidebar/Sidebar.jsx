@@ -1,7 +1,9 @@
 import { useLocation } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import cn from 'classnames';
+import { authenticatedUser } from 'constants/authenticatedUser';
 import { pages } from 'constants/pages';
+import { MiniProfile } from 'components/MiniProfile';
 import peopleRoofIcon from 'images/people-roof.svg';
 import styles from 'components/SideBar/SideBar.scss';
 
@@ -15,7 +17,7 @@ export const SideBar = () => {
         Task Manager
       </NavLink>
       <nav>
-        <ul className={styles.navigation}>
+        <ul  className={styles.navigationList}>
           {pages.map(({ id, title, link, icon, alt }) => (
             <li key={id}>
               <NavLink className={cn(styles.pageLink, { [styles.pageLinkActive]: pathname === link })} to={link}>
@@ -26,6 +28,10 @@ export const SideBar = () => {
           ))}
         </ul>
       </nav>
+      <div className={styles.account}>
+        <MiniProfile user={authenticatedUser} bigStyle />
+        {authenticatedUser.name}
+      </div>
     </section>
   );
 };
