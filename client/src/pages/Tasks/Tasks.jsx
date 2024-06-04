@@ -5,6 +5,7 @@ import * as usersSlice from '../../redux/features/usersSlice';
 import { ErrorMessage } from 'components/ErrorMessage/ErrorMessage';
 import { TaskAuthoring } from 'components/Modals/TaskAuthoring';
 import { SearchBar } from 'components/SearchBar';
+import { SortBar } from 'components/SortBar';
 import { Loader } from 'components/Loader';
 import { TaskCard } from 'pages/Tasks/TaskCard';
 import styles from 'pages/Tasks/Tasks.scss';
@@ -12,6 +13,7 @@ import styles from 'pages/Tasks/Tasks.scss';
 export default function Tasks() {
   const [searchedStatus, setStatusesList] = useState('');
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
+  const [defaultSorted, setDefaultSorted] = useState(false);
   const [searchValue, setSearchValue] = useState('');
   const [tagsList, setTagsList] = useState([]);
   const dispatch = useDispatch();
@@ -34,8 +36,9 @@ export default function Tasks() {
   }, []);
 
   useEffect(() => {
-    if (tasks && tasks.length > 1) {
+    if (!defaultSorted && tasks && tasks.length > 1) {
       dispatch(tasksSlice.actions.sortByCreationDate());
+      setDefaultSorted(true);
     }
   }, [tasks]);
 
@@ -67,6 +70,7 @@ export default function Tasks() {
         setTagsList={setTagsList}
         setStatusesList={setStatusesList}
       />
+      <SortBar />
       <div className={styles.tasksList}>
         {!isTasksRequestLoading &&
           (tasks.length > 0 ? (

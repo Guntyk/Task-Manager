@@ -1,0 +1,32 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.sortBtn {
+  @extend %border;
+  @extend %text;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  background: $white;
+
+  img {
+    width: 1.75rem;
+    margin: -0.5rem;
+    opacity: 0.8;
+  }
+
+  &Active {
+    color: $white;
+    background: $blue;
+
+    img {
+      filter: invert(100%);
+    }
+  }
+}

@@ -72,6 +72,21 @@ const tasksSlice = createSlice({
         return new Date(b.creationDate) - new Date(a.creationDate);
       });
     },
+    sortByPriority: (state, { payload }) => {
+      state.tasks.sort((a, b) => {
+        return payload === 0 ? b.priority - a.priority : a.priority - b.priority;
+      });
+    },
+    sortByDeadline: (state, { payload }) => {
+      state.tasks.sort((a, b) => {
+        if (!a.deadline) return 1;
+        if (!b.deadline) return -1;
+
+        return payload === 0
+          ? new Date(a.deadline) - new Date(b.deadline)
+          : new Date(b.deadline) - new Date(a.deadline);
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
