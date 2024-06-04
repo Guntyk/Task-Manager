@@ -72,27 +72,26 @@ export default function Tasks() {
       />
       <SortBar />
       <div className={styles.tasksList}>
-        {!isTasksRequestLoading &&
-          (tasks.length > 0 ? (
-            tasks
-              .filter(({ title }) => title.includes(searchValue))
-              .filter(
-                ({ tags, status }) =>
-                  (!tagsList.length || (tags && tagsList.every(({ label }) => tags.includes(label)))) &&
-                  (!searchedStatus.length || status === searchedStatus)
-              )
-              .map((task) => (
-                <TaskCard
-                  task={task}
-                  setTagsList={setTagsList}
-                  usersList={users}
-                  isUsersRequestLoading={isUsersRequestLoading}
-                  key={task.id}
-                />
-              ))
-          ) : (
-            <span className={styles.noTasks}>There are no tasks yet</span>
-          ))}
+        {tasks.length > 0 ? (
+          tasks
+            .filter(({ title }) => title.includes(searchValue))
+            .filter(
+              ({ tags, status }) =>
+                (!tagsList.length || (tags && tagsList.every(({ label }) => tags.includes(label)))) &&
+                (!searchedStatus.length || status === searchedStatus)
+            )
+            .map((task) => (
+              <TaskCard
+                task={task}
+                setTagsList={setTagsList}
+                usersList={users}
+                isUsersRequestLoading={isUsersRequestLoading}
+                key={task.id}
+              />
+            ))
+        ) : (
+          <span className={styles.noTasks}>There are no tasks yet</span>
+        )}
       </div>
       {(isTasksRequestLoading || isUsersRequestLoading) && (
         <div className={styles.mainLoaderWrapper}>

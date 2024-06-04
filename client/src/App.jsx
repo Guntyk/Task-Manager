@@ -1,7 +1,7 @@
 import { Route, Switch } from 'react-router-dom';
 import { pathnames } from 'constants/pathnames';
 import { SideBar } from 'components/SideBar';
-import { Dashboard } from 'pages/Dashboard/Dashboard';
+import { Dashboard } from 'pages/Dashboard';
 import { TaskPage } from 'pages/Tasks/TaskPage';
 import Tasks from 'pages/Tasks/Tasks';
 import styles from 'styles/main.scss';
