@@ -1,0 +1,15 @@
+.panel {
+  @extend %border;
+
+  padding: 2rem 2.5rem;
+  height: 50rem;
+  aspect-ratio: 1/1;
+  background: $white;
+  border-radius: 2.5rem;
+}
+
+.titleS {
+  @extend %text-l;
+
+  color: #000;
+}

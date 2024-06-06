@@ -31,7 +31,7 @@ export default class TasksService {
     return { result: data, error: null };
   }
 
-  static async editTask(updatedTask, id) {
+  static async editTask({ updatedTask, id }) {
     const [error, { data }] = await backendApi.put(`/tasks/edit/${id}`, updatedTask);
 
     if (error) {

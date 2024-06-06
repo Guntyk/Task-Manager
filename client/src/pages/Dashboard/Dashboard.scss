@@ -14,84 +14,8 @@
 }
 
 .wrapper {
+  display: flex;
+  align-items: start;
+  gap: 3rem;
   margin-top: 2rem;
-}
-
-.panel {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 2rem;
-  color: $white;
-  padding: 2rem 2.5rem;
-  border-radius: 2.5rem;
-  &.overallInfo {
-    background: $darkGray;
-  }
-
-  .titleS {
-    @extend %text-l;
-
-    letter-spacing: 0.025rem;
-  }
-}
-
-.generalStats {
-  display: flex;
-  align-items: center;
-  margin: 1rem 0;
-  gap: 2rem;
-
-  .stats {
-    display: flex;
-    align-items: end;
-    gap: 0.5rem;
-  }
-
-  .line {
-    width: 0.2rem;
-    height: 2rem;
-    background: $gray;
-    margin-left: -0.5rem;
-    opacity: 0.5;
-  }
-
-  .quantity {
-    @extend %title-xl;
-
-    line-height: 0.75;
-    letter-spacing: -0.1rem;
-  }
-
-  .description {
-    @extend %text-xs;
-
-    color: $gray;
-    max-width: 6rem;
-    margin-bottom: -0.1rem;
-  }
-}
-
-.tasksQuantity {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-
-  .quantity {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1.25rem 1rem;
-    color: #000;
-    background: $white;
-    border-radius: 1rem;
-
-    &Number {
-      @extend %title-l;
-
-      line-height: 0.8;
-      letter-spacing: 0;
-    }
-  }
 }
